@@ -1,6 +1,15 @@
 ###############################################################################
 # Cross-Platform .NET + Frontend .gitattributes
 # Based on: dotnet/runtime, dotnet/aspnetcore, dotnet/maui, angular/angular
+#
+# Sources:
+#   - https://github.com/dotnet/runtime/blob/main/.gitattributes
+#   - https://github.com/dotnet/aspnetcore/blob/main/.gitattributes
+#   - https://github.com/dotnet/maui/blob/main/.gitattributes
+#   - https://github.com/angular/angular/blob/main/.gitattributes
+#   - https://github.com/PowerShell/PowerShell/discussions/16569
+#   - https://git-scm.com/docs/gitattributes
+#   - https://learn.microsoft.com/en-us/azure/devops/pipelines/troubleshooting/troubleshooting
 ###############################################################################
 
 ###############################################################################
@@ -37,12 +46,13 @@
 ###############################################################################
 # Web / Frontend Source Files
 ###############################################################################
-*.html         text
-*.htm          text
-*.css          text
-*.scss         text
-*.sass         text
-*.less         text
+# Frontend markup/styles - Force LF for tooling consistency (Prettier, Stylelint default to LF)
+*.html         text eol=lf
+*.htm          text eol=lf
+*.css          text eol=lf
+*.scss         text eol=lf
+*.sass         text eol=lf
+*.less         text eol=lf
 
 # JavaScript/TypeScript - Force LF for tooling compatibility (webpack, esbuild, etc.)
 # Per Angular's .gitattributes: "JS and TS files must always use LF for tools to work"
