@@ -1,0 +1,254 @@
+###############################################################################
+# Cross-Platform .NET + Frontend .gitattributes
+# Based on: dotnet/runtime, dotnet/aspnetcore, dotnet/maui, angular/angular
+###############################################################################
+
+###############################################################################
+# Set default behavior to automatically normalize line endings
+# LF in repo, native line endings on checkout (CRLF on Windows, LF on Unix)
+###############################################################################
+* text=auto
+
+###############################################################################
+# .NET Source Files
+###############################################################################
+*.cs           text diff=csharp
+*.vb           text
+*.fs           text
+*.fsx          text
+*.resx         text
+
+# Razor / Blazor
+*.razor        text
+*.cshtml       text
+
+# Project and build files
+*.csproj       text
+*.vbproj       text
+*.fsproj       text
+*.dbproj       text
+*.sqlproj      text
+*.props        text
+*.targets      text
+
+# Solution files require CRLF for Visual Studio compatibility
+*.sln          text eol=crlf
+
+###############################################################################
+# Web / Frontend Source Files
+###############################################################################
+*.html         text
+*.htm          text
+*.css          text
+*.scss         text
+*.sass         text
+*.less         text
+
+# JavaScript/TypeScript - Force LF for tooling compatibility (webpack, esbuild, etc.)
+# Per Angular's .gitattributes: "JS and TS files must always use LF for tools to work"
+*.js           text eol=lf
+*.jsx          text eol=lf
+*.ts           text eol=lf
+*.tsx          text eol=lf
+*.mjs          text eol=lf
+*.cjs          text eol=lf
+
+# Vue single-file components
+*.vue          text eol=lf
+
+# Config files
+*.json         text
+*.xml          text
+*.config       text
+
+###############################################################################
+# Blazor WebAssembly SRI Integrity
+# These files must use LF to pass SubResource Integrity checks
+###############################################################################
+jquery*.js     text eol=lf
+jquery*.map    text eol=lf
+bootstrap*.js  text eol=lf
+bootstrap*.css text eol=lf
+bootstrap*.map text eol=lf
+
+###############################################################################
+# Shell Scripts - Force LF (required for Unix execution)
+###############################################################################
+*.sh           text eol=lf
+*.bash         text eol=lf
+.husky/*       text eol=lf
+
+###############################################################################
+# Windows Batch Scripts - Force CRLF (cmd.exe requires CRLF)
+###############################################################################
+*.bat          text eol=crlf
+*.cmd          text eol=crlf
+
+###############################################################################
+# PowerShell Scripts - Force LF (PowerShell 7+ is cross-platform)
+# PowerShell 7 handles LF on all platforms; LF recommended for cross-platform repos
+# See: https://github.com/PowerShell/PowerShell/discussions/16569
+###############################################################################
+*.ps1          text eol=lf
+*.psm1         text eol=lf
+*.psd1         text eol=lf
+
+###############################################################################
+# Docker / Containerization - Force LF
+###############################################################################
+Dockerfile     text eol=lf
+Dockerfile.*   text eol=lf
+*.dockerfile   text eol=lf
+docker-compose*.yml  text eol=lf
+docker-compose*.yaml text eol=lf
+.dockerignore  text eol=lf
+
+###############################################################################
+# CI/CD and Config Files
+###############################################################################
+*.yaml         text
+*.yml          text
+*.toml         text
+Makefile       text eol=lf
+makefile       text eol=lf
+
+# Frontend tooling config
+.editorconfig     text
+.gitattributes    text
+.gitignore        text
+.browserslistrc   text
+.eslintrc*        text
+.prettierrc*      text
+.stylelintrc*     text
+tsconfig*.json    text
+angular.json      text
+package.json      text
+vite.config.*     text
+webpack.config.*  text
+
+###############################################################################
+# Lock Files - Binary to prevent merge conflicts
+# These are machine-generated and should be regenerated, not merged
+###############################################################################
+package-lock.json    binary
+yarn.lock            binary
+pnpm-lock.yaml       binary
+packages.lock.json   binary
+
+###############################################################################
+# Documentation
+###############################################################################
+*.md           text
+*.txt          text
+*.rst          text
+LICENSE        text
+LICENSE.*      text
+AUTHORS        text
+CHANGELOG      text
+CHANGELOG.*    text
+
+###############################################################################
+# Verification Files (VerifyTests - common in .NET testing)
+###############################################################################
+*.verified.txt text eol=lf working-tree-encoding=UTF-8
+*.verified.json text eol=lf working-tree-encoding=UTF-8
+*.verified.xml text eol=lf working-tree-encoding=UTF-8
+
+###############################################################################
+# Binary Files - No line ending conversion
+###############################################################################
+
+# Images
+*.png          binary
+*.jpg          binary
+*.jpeg         binary
+*.gif          binary
+*.ico          binary
+*.webp         binary
+*.svg          binary
+*.bmp          binary
+*.tif          binary
+*.tiff         binary
+
+# Fonts
+*.woff         binary
+*.woff2        binary
+*.ttf          binary
+*.otf          binary
+*.eot          binary
+
+# Documents
+*.pdf          binary
+*.doc          binary
+*.docx         binary
+*.xls          binary
+*.xlsx         binary
+*.ppt          binary
+*.pptx         binary
+
+# .NET Binaries
+*.dll          binary
+*.exe          binary
+*.pdb          binary
+*.mdb          binary
+
+# NuGet
+*.nupkg        binary
+*.snupkg       binary
+
+# WebAssembly
+*.wasm         binary
+
+# Certificates and Keys
+*.pfx          binary
+*.cer          binary
+*.crt          binary
+*.key          binary
+*.snk          binary
+*.p12          binary
+
+# Archives
+*.zip          binary
+*.gz           binary
+*.tar          binary
+*.7z           binary
+*.rar          binary
+*.bz2          binary
+
+# Databases
+*.sqlite       binary
+*.db           binary
+*.mdf          binary
+*.ldf          binary
+
+# Media
+*.mp3          binary
+*.mp4          binary
+*.wav          binary
+*.avi          binary
+*.mov          binary
+*.wmv          binary
+*.ogg          binary
+*.webm         binary
+
+# Source maps (can be large, treat as binary)
+*.map          binary
+
+###############################################################################
+# GitHub Linguist - Repository language statistics
+###############################################################################
+
+# Vendored dependencies (don't count in language stats)
+**/wwwroot/lib/**    linguist-vendored
+**/node_modules/**   linguist-vendored
+**/vendor/**         linguist-vendored
+
+# Generated files
+**/obj/**            linguist-generated
+**/bin/**            linguist-generated
+*.g.cs               linguist-generated
+*.generated.cs       linguist-generated
+*.Designer.cs        linguist-generated
+
+# Documentation (don't skew language percentages)
+docs/**              linguist-documentation
