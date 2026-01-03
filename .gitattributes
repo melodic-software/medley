@@ -43,6 +43,10 @@
 # Solution files require CRLF for Visual Studio compatibility
 *.sln          text eol=crlf
 
+# New XML solution format (.NET 10+) - uses LF (XML standard)
+# See: https://devblogs.microsoft.com/visualstudio/new-simpler-solution-file-format/
+*.slnx         text eol=lf
+
 ###############################################################################
 # Web / Frontend Source Files
 ###############################################################################

@@ -750,6 +750,12 @@ indent_size = 2
 
 [*.sln]
 indent_style = tab
+end_of_line = crlf
+
+[*.slnx]
+indent_style = space
+indent_size = 2
+end_of_line = lf
 
 # =============================================================================
 # JSON / YAML FILES
