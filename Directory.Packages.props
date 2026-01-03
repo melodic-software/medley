@@ -1,0 +1,17 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Centralized Package Management (CPM)
+      Add package versions here as projects are created.
+
+      Example:
+      <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+      <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    -->
+  </ItemGroup>
+</Project>

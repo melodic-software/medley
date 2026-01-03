@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Check for solution files
+        id: check-sln
+        run: |
+          if ls *.sln 1> /dev/null 2>&1 || ls src/*.sln 1> /dev/null 2>&1; then
+            echo "has_solution=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_solution=false" >> $GITHUB_OUTPUT
+            echo "No solution file found - skipping build"
+          fi
+
+      - name: Restore dependencies
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet restore
+
+      - name: Build
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet test --no-build --configuration Release --verbosity normal
