@@ -1,0 +1,37 @@
+name: 'Label PRs'
+
+on:
+  # Using pull_request_target to allow labeling fork PRs (requires write access)
+  #
+  # ╔══════════════════════════════════════════════════════════════════════════╗
+  # ║ SECURITY CRITICAL: pull_request_target grants write access to fork PRs  ║
+  # ║                                                                          ║
+  # ║ NEVER add `actions/checkout` to this workflow with:                      ║
+  # ║   ref: ${{ github.event.pull_request.head.sha }}                         ║
+  # ║   ref: ${{ github.head_ref }}                                            ║
+  # ║                                                                          ║
+  # ║ Checking out untrusted PR code with write permissions enables            ║
+  # ║ "pwn request" attacks where malicious code runs with elevated access.    ║
+  # ║                                                                          ║
+  # ║ Current safety: labeler action only reads file paths from PR metadata -  ║
+  # ║ it does NOT execute any code from the PR.                                ║
+  # ╚══════════════════════════════════════════════════════════════════════════╝
+  #
+  # See: https://securitylab.github.com/resources/github-actions-new-patterns-and-mitigations/
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b  # v6.0.1
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          configuration-path: '.github/labeler.yml'
+          sync-labels: false  # Don't remove labels if files change
