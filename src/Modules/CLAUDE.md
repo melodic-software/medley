@@ -1,15 +1,110 @@
----
-paths:
-  - "**/Domain/**/*.cs"
+<!-- Last reviewed: 2026-01-04 -->
+<!-- ~1,150 tokens -->
+<!-- Lazy-loaded: Only included when working in src/Modules/ directory -->
+
+# Module Development Patterns
+
+Context-specific guidance for modular monolith development: module boundaries and domain-driven design.
+
 ---
 
-<!-- ~750 tokens -->
+## Module Boundaries
 
-# Domain-Driven Design Patterns
+Medley uses a Modular Monolith architecture. Each module is self-contained with strict boundaries.
+
+### Rules
+
+1. **No cross-module direct references** - Modules communicate only through:
+   - Integration events (async messaging)
+   - Public contracts (shared DTOs in Contracts projects)
+   - Module APIs (explicit public interfaces)
+
+2. **Module structure** - Each module follows:
+   ```
+   src/Modules/{ModuleName}/
+   ├── {ModuleName}.Application/     # Use cases, CQRS handlers
+   ├── {ModuleName}.Domain/          # Entities, value objects, domain events
+   ├── {ModuleName}.Infrastructure/  # EF Core, external services
+   └── {ModuleName}.Contracts/       # Public DTOs, integration events
+   ```
+
+3. **Dependency direction** - Only depend on:
+   - Your own module's layers (inward)
+   - Shared kernel (`src/SharedKernel/`)
+   - Other modules' `.Contracts` projects only
+
+4. **Database isolation** - Each module owns its schema:
+   - Use schema prefix: `[ModuleName].[TableName]`
+   - Never query another module's tables directly
+
+### Integration Events
+
+Cross-module communication via strongly-typed events:
+
+```csharp
+// Define in Contracts project (e.g., Orders.Contracts)
+public record OrderPlacedEvent(Guid OrderId, Guid CustomerId, decimal Total) : IIntegrationEvent;
+
+// Publish from domain handler
+public class PlaceOrderHandler(IEventPublisher publisher)
+{
+    public async Task Handle(PlaceOrderCommand cmd, CancellationToken ct)
+    {
+        // ... create order
+        await publisher.PublishAsync(new OrderPlacedEvent(order.Id, order.CustomerId, order.Total), ct);
+    }
+}
+
+// Subscribe in another module (e.g., Notifications.Application)
+public class OrderPlacedHandler : IIntegrationEventHandler<OrderPlacedEvent>
+{
+    public async Task HandleAsync(OrderPlacedEvent @event, CancellationToken ct)
+    {
+        await _notificationService.SendOrderConfirmationAsync(@event.CustomerId, ct);
+    }
+}
+```
+
+**Outbox pattern**: Use transactional outbox for reliable publishing:
+```csharp
+// Events saved in same transaction as domain changes
+await _outbox.SaveAsync(events, ct);
+await _unitOfWork.CommitAsync(ct);
+// Background processor publishes from outbox
+```
+
+### Anti-Corruption Layer
+
+When integrating with external systems or legacy modules:
+
+```csharp
+// ACL translates between external and internal models
+public class LegacyCustomerAdapter(ILegacyCustomerApi legacy) : ICustomerService
+{
+    public async Task<Customer> GetCustomerAsync(CustomerId id, CancellationToken ct)
+    {
+        var legacyDto = await legacy.GetCustomer(id.Value);
+        return MapToCustomer(legacyDto);  // Translation happens here
+    }
+}
+```
+
+**Purpose**: Isolate your domain from external models and terminology.
+
+### Prohibited - Module Boundaries
+
+- Direct cross-module database queries
+- Sharing DbContext across module boundaries
+- Referencing non-Contracts projects from other modules
+- Synchronous cross-module calls in request path (use events)
+
+---
+
+## Domain-Driven Design Patterns
 
 Apply DDD patterns for modules with complex business logic. For simple CRUD, use anemic models.
 
-## When to Apply DDD
+### When to Apply DDD
 
 | Complexity | Approach |
 |------------|----------|
@@ -17,9 +112,9 @@ Apply DDD patterns for modules with complex business logic. For simple CRUD, use
 | Business rules, invariants | Rich domain model with DDD patterns |
 | Complex workflows | Aggregates + domain events |
 
-## Tactical Patterns
+### Tactical Patterns
 
-### Aggregate Root
+#### Aggregate Root
 
 Entry point for object clusters. Enforces invariants across the aggregate.
 
@@ -62,7 +157,7 @@ public class Order : AggregateRoot<OrderId>
 - Never expose mutable collections
 - Validate invariants in methods, not setters
 
-### Entity
+#### Entity
 
 Objects with identity that persists over time.
 
@@ -85,7 +180,7 @@ public class OrderItem : Entity<OrderItemId>
 }
 ```
 
-### Value Object
+#### Value Object
 
 Immutable objects defined by their attributes, no identity.
 
@@ -110,7 +205,7 @@ public record Address(string Street, string City, string PostalCode, string Coun
 
 **Use records**: Gives immutability, equality, and `with` expressions for free.
 
-### Domain Event
+#### Domain Event
 
 Notification that something significant happened in the domain.
 
@@ -128,7 +223,7 @@ public abstract class AggregateRoot<TId>
 }
 ```
 
-### Domain Service
+#### Domain Service
 
 Stateless operations that don't belong to a single aggregate.
 
@@ -145,7 +240,7 @@ public class PricingService(ITaxCalculator taxCalculator, IDiscountPolicy discou
 }
 ```
 
-### Repository
+#### Repository
 
 Abstraction for aggregate persistence. Defined in Domain, implemented in Infrastructure.
 
@@ -171,7 +266,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 }
 ```
 
-## Bounded Contexts
+### Bounded Contexts
 
 Each module = one bounded context with its own ubiquitous language.
 
@@ -183,7 +278,7 @@ Each module = one bounded context with its own ubiquitous language.
 
 **Don't unify**: Same term, different meaning. Accept domain-specific naming.
 
-## Prohibited
+### Prohibited - DDD
 
 - Anemic domain model for complex business logic
 - Exposing aggregate internals (mutable collections, setters)

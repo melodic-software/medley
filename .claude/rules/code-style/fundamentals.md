@@ -5,7 +5,7 @@ paths:
 
 <!-- ~500 tokens -->
 
-# Code Style
+# Code Style Fundamentals
 
 Key conventions reinforced from `.editorconfig`. Full rules enforced by analyzers.
 
