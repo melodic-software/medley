@@ -1,14 +1,11 @@
----
-paths:
-  - ".claude/rules/**/*.md"
----
-
+<!-- Last reviewed: 2026-01-04 -->
 <!-- ~800 tokens -->
+<!-- Lazy-loaded: Only included when working in .claude/rules/ directory -->
 <!-- CANARY: RULES_META_V1_2026 -->
 
 # Claude Code Rules Authoring Guide
 
-This rule documents how to create and maintain rules in `.claude/rules/`.
+This file provides guidance for creating and maintaining rules in `.claude/rules/`.
 
 ## Deviations from Official Documentation
 
