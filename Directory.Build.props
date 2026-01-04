@@ -1,11 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
+    <!-- Assembly Metadata -->
+    <Company>Melodic Software</Company>
+    <Copyright>Copyright (c) 2026 Melodic Software. All Rights Reserved.</Copyright>
+    <RepositoryUrl>https://github.com/melodic-software/medley</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Build Configuration -->
     <TargetFramework>net10.0</TargetFramework>
+    <!-- C# 14 features: field keyword, extension members, null-conditional assignment, etc. -->
     <LangVersion>14</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- AnalysisLevel controls .NET/Roslyn analyzers (code style, CA rules) -->
     <AnalysisLevel>latest-all</AnalysisLevel>
+    <!-- WarningLevel 9999 = all warning waves including preview (maximum strictness) -->
+    <WarningLevel>9999</WarningLevel>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- For container deployments, consider enabling:
+    <InvariantGlobalization>true</InvariantGlobalization>
+    -->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Deterministic Builds -->
+    <!-- Explicit for documentation; true by default in modern .NET SDK -->
+    <Deterministic>true</Deterministic>
+    <!-- ContinuousIntegrationBuild normalizes paths in PDBs for reproducibility -->
+    <!-- Set via CI/CD: -p:ContinuousIntegrationBuild=true (or auto-detected by SDK) -->
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true' or '$(TF_BUILD)' == 'true' or '$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Source Link - enables source debugging of NuGet packages -->
+    <!-- https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/sourcelink -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Include symbols in the main NuGet package (snupkg is alternative) -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet Vulnerability Auditing - .NET 8+ built-in -->
+    <!-- https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Build Performance - faster incremental builds -->
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <!-- Reference assemblies = downstream projects only rebuild when PUBLIC API changes -->
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <!-- Skip analysis for implicit builds (test runs, etc.) -->
+    <OptimizeImplicitlyTriggeredBuild>true</OptimizeImplicitlyTriggeredBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Generate XML docs for Swagger/OpenAPI and IntelliSense -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591 severity controlled by .editorconfig (suggestion level for public APIs) -->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Debug symbols embedded for production debugging -->
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Code Analysis - keep CA warnings separate from compiler errors -->
+    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Runtime version flexibility - use newer patch/minor versions for security fixes -->
+    <RollForward>LatestMinor</RollForward>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet Package Defaults - proprietary code, not for publishing -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 </Project>
