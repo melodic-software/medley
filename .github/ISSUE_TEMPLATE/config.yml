@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security Vulnerability
+    url: https://github.com/melodic-software/medley/security/policy
+    about: Report security vulnerabilities privately (do NOT open a public issue)
+  - name: Documentation
+    url: https://github.com/melodic-software/medley/tree/main/docs
+    about: Check the docs before opening an issue
+  - name: Discussions
+    url: https://github.com/melodic-software/medley/discussions
+    about: Ask questions or share ideas in Discussions
