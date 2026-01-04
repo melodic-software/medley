@@ -1,0 +1,63 @@
+version: 2
+updates:
+  # NuGet packages
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Etc/UTC"
+    groups:
+      # Group minor/patch updates together (less disruptive)
+      dotnet-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Major updates reviewed separately (breaking changes)
+      dotnet-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "nuget"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Etc/UTC"
+    groups:
+      # Group routine minor/patch updates (non-security)
+      github-actions-routine:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Major updates reviewed separately (breaking changes)
+      github-actions-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
+    # Note: Security updates are NOT grouped - they create individual PRs
+    # for immediate visibility and faster patching
+    commit-message:
+      prefix: "ci(deps)"
+      include: "scope"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
