@@ -1,72 +1,112 @@
-# Database Migration Strategy
+# Database Migrations
 
 ## Philosophy
 
-All database changes **MUST** be in source control. The approach is tool-agnostic to allow future flexibility (EF Core, DbUp, Flyway, etc.).
+All database changes **MUST** be in source control via EF Core migrations.
 
-## Folder Structure
+## Pattern: Per-Module Ownership
 
-```
-migrations/
-├── V001__Initial_Schema.sql
-├── V002__Add_Users_Table.sql
-├── V003__Add_Email_Index.sql
-└── README.md
-```
-
-## Naming Convention
+Each module owns its migrations alongside its `DbContext`:
 
 ```
-V{version}__{description}.sql
+src/
+├── Modules/
+│   ├── Auth/
+│   │   └── Auth.Infrastructure/
+│   │       └── Data/
+│   │           ├── AuthDbContext.cs
+│   │           └── Migrations/           # Auth migrations
+│   └── Billing/
+│       └── Billing.Infrastructure/
+│           └── Data/
+│               ├── BillingDbContext.cs
+│               └── Migrations/           # Billing migrations
 ```
 
-- **Version**: Zero-padded sequential number (001, 002, 003...)
-- **Description**: Snake_case description of change
+**Why this pattern:**
 
-### Examples
+- Microsoft standard (eShopOnWeb, Clean Architecture templates)
+- Migrations travel with the code that uses them
+- Different `DbContext` = different database = no version collisions
+- `dotnet ef` CLI works without extra configuration
 
-- `V001__Initial_Schema.sql`
-- `V002__Add_Users_Table.sql`
-- `V003__Add_Audit_Columns.sql`
-- `V004__Create_Orders_Table.sql`
+## Common Commands
 
-## Dual-Track Approach
+### Create a Migration
 
-### 1. EF Core Migrations (Primary for Development)
-
-- Code-first schema changes
-- Generate SQL scripts: `dotnet ef migrations script`
-- Store generated SQL in `migrations/` folder
-
-### 2. Raw SQL Scripts (For Complex Scenarios)
-
-- Data migrations, complex transforms
-- Stored in same `migrations/` folder
-- Same versioning convention
-
-## Tracking Table (Tool-Agnostic)
-
-```sql
-CREATE TABLE schema_versions (
-    version VARCHAR(50) PRIMARY KEY,
-    description VARCHAR(255),
-    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    checksum VARCHAR(64)
-);
+```bash
+dotnet ef migrations add AddUsersTable \
+    --project src/Modules/Auth/Auth.Infrastructure \
+    --startup-project src/Medley.Web
 ```
 
-## Future Tool Integration
+### Generate SQL Script (for Production)
 
-| Tool | Compatibility |
-|------|---------------|
-| **Flyway** | Recognizes `V{version}__` naming natively |
-| **DbUp** | Can read from `migrations/` folder |
-| **EF Core** | Can coexist, track separately or unified |
+```bash
+dotnet ef migrations script --idempotent \
+    --project src/Modules/Auth/Auth.Infrastructure \
+    --startup-project src/Medley.Web \
+    --output migration.sql
+```
+
+### Apply Migrations (Development Only)
+
+```bash
+dotnet ef database update \
+    --project src/Modules/Auth/Auth.Infrastructure \
+    --startup-project src/Medley.Web
+```
+
+## Production Deployment
+
+> **Never** use `MigrateAsync()` or `Database.Migrate()` at application startup in production.
+
+### Recommended Workflow
+
+1. Generate idempotent SQL script in CI/CD
+2. Review script (manual or automated)
+3. Execute via deployment pipeline with appropriate gates
+4. Monitor for issues
+
+### Why Script-Based Deployment?
+
+- **Auditability**: Scripts can be reviewed before execution
+- **Rollback preparation**: Know exactly what changed
+- **DBA gates**: Complex changes can require approval
+- **Blue-green deployments**: Scripts work with zero-downtime strategies
 
 ## Best Practices
 
 1. **One change per migration** - Easier to debug and rollback
-2. **Idempotent scripts** - Use `IF NOT EXISTS` where possible
-3. **Test in staging first** - Never run untested migrations in production
+2. **Descriptive names** - `AddEmailIndexToUsers` not `Update1`
+3. **Test locally first** - Apply migrations to local database before committing
 4. **Keep migrations small** - Large migrations increase deployment risk
-5. **Version everything** - Even seed data and configuration changes
+5. **Don't modify applied migrations** - Create new migrations for fixes
+
+## CI/CD Integration
+
+Example GitHub Actions step:
+
+```yaml
+- name: Generate Migration Script
+  run: |
+    dotnet ef migrations script --idempotent \
+      --project src/Modules/Auth/Auth.Infrastructure \
+      --startup-project src/Medley.Web \
+      --output ${{ github.workspace }}/migration.sql
+
+- name: Upload Migration Script
+  uses: actions/upload-artifact@v4
+  with:
+    name: migration-script  # v4 requires unique artifact names per workflow
+    path: migration.sql
+```
+
+> **Note**: `actions/upload-artifact@v4` has breaking changes from v3:
+> - Artifact names must be unique across the entire workflow run
+> - Hidden files are excluded by default (use `include-hidden-files: true` if needed)
+> - Same-name artifacts from different jobs no longer merge automatically
+
+---
+
+*Last updated: 2026-01-03*
