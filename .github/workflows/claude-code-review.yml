@@ -3,12 +3,11 @@ name: Claude Code Review
 on:
   pull_request:
     types: [opened, synchronize]
-    # Optional: Only run on specific file changes
-    # paths:
-    #   - "src/**/*.ts"
-    #   - "src/**/*.tsx"
-    #   - "src/**/*.js"
-    #   - "src/**/*.jsx"
+    # Skip when workflow files are modified (causes validation failure due to
+    # claude-code-action security check requiring workflow to match main branch)
+    paths-ignore:
+      - '.github/workflows/claude-code-review.yml'
+      - '.github/workflows/claude.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
