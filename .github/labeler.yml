@@ -1,0 +1,69 @@
+# Auto-labeling configuration for PRs based on file paths
+# Used by .github/workflows/labeler.yml
+# Syntax: v5+/v6 format using any-glob-to-any-file matcher
+#
+# MAINTAINER NOTE: Add new modules here as they are created in src/Modules/
+# Pattern: area:<module-name> with path 'src/Modules/<ModuleName>/**'
+
+# Module areas
+area:auth:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/Modules/Auth/**'
+
+area:identity:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/Medley.IdentityServer/**'
+
+area:blazor:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/Medley.Web/**/*.razor'
+          - 'src/Medley.Web/**/*.razor.cs'
+
+area:shared-kernel:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/SharedKernel/**'
+
+area:aspire:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/Medley.AppHost/**'
+
+# Infrastructure
+area:ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'
+
+area:build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'Directory.Build.props'
+          - 'Directory.Packages.props'
+          - 'global.json'
+          - '*.sln'
+          - '*.slnx'
+
+# Documentation
+area:docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'docs/**'
+          - '*.md'
+          - 'LICENSE'
+
+# Tests
+area:tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'tests/**'
+
+# Claude Code configuration
+area:claude:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'CLAUDE.md'
+          - '.claude/**'

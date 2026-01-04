@@ -1,0 +1,47 @@
+# CODEOWNERS - Define code owners for automatic review requests
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Note: Later patterns take precedence over earlier patterns.
+# Review quarterly to ensure ownership is current.
+#
+# SETUP REQUIRED: Create @melodic-software/core-team in GitHub Organization settings
+# before this file becomes effective. Invalid team references are silently ignored.
+
+# =============================================================================
+# DEFAULT OWNER (catch-all, must be first)
+# =============================================================================
+* @melodic-software/core-team
+
+# =============================================================================
+# INFRASTRUCTURE & CI/CD (higher priority than default)
+# =============================================================================
+/.github/** @melodic-software/core-team
+/infrastructure/** @melodic-software/core-team
+*.bicep @melodic-software/core-team
+*.tf @melodic-software/core-team
+*.tfvars @melodic-software/core-team
+
+# =============================================================================
+# BUILD & PROJECT FILES
+# =============================================================================
+*.csproj @melodic-software/core-team
+*.sln @melodic-software/core-team
+*.slnx @melodic-software/core-team
+Directory.Build.props @melodic-software/core-team
+Directory.Packages.props @melodic-software/core-team
+global.json @melodic-software/core-team
+nuget.config @melodic-software/core-team
+
+# =============================================================================
+# DOCUMENTATION
+# =============================================================================
+/docs/** @melodic-software/core-team
+*.md @melodic-software/core-team
+LICENSE* @melodic-software/core-team
+
+# =============================================================================
+# MODULE OWNERSHIP (uncomment and customize as team grows)
+# =============================================================================
+# /src/Modules/Auth/** @melodic-software/auth-team
+# /src/Modules/Billing/** @melodic-software/billing-team
+# /src/Modules/Notifications/** @melodic-software/notifications-team

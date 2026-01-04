@@ -1,0 +1,70 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Every Monday at 6:00 AM UTC
+
+# Explicit permissions for security (principle of least privilege)
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze C#
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    steps:
+      # SHA-pinned for supply chain security
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602  # v5.0.1
+        with:
+          global-json-file: global.json
+          # cache: true  # Will be enabled when packages.lock.json exists
+
+      - name: Check for solution files
+        id: check-sln
+        run: |
+          # Check for .sln and .slnx files in root and src directories
+          if find . -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) | grep -q . || \
+             find src -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | grep -q .; then
+            echo "has_solution=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_solution=false" >> $GITHUB_OUTPUT
+            echo "No solution file found - skipping CodeQL build"
+          fi
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@5d4e8d1aca955e8d8589aabd499c5cae939e33c7  # v4.31.9
+        with:
+          languages: csharp
+          build-mode: manual
+          queries: security-extended
+
+      - name: Build
+        if: steps.check-sln.outputs.has_solution == 'true'
+        # UseSharedCompilation=false ensures CodeQL can trace compiler process arguments
+        # See: https://github.com/github/codeql-action/issues/3208
+        run: dotnet build --configuration Release /p:UseSharedCompilation=false
+
+      - name: Warn if no solution
+        if: steps.check-sln.outputs.has_solution != 'true'
+        run: echo "::warning::No solution file found - CodeQL build was skipped"
+
+      - name: Perform CodeQL Analysis
+        if: steps.check-sln.outputs.has_solution == 'true'
+        uses: github/codeql-action/analyze@5d4e8d1aca955e8d8589aabd499c5cae939e33c7  # v4.31.9
+        with:
+          category: /language:csharp

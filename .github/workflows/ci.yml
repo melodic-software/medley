@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Explicit permissions for security (principle of least privilege)
+# Note: Add `id-token: write` when Azure OIDC deployment is implemented
+# See: https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+    steps:
+      # SHA-pinned for supply chain security
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602  # v5.0.1
+        with:
+          global-json-file: global.json
+          # cache: true  # Will be enabled when packages.lock.json exists
+
+      - name: Check for solution files
+        id: check-sln
+        run: |
+          # Check for .sln and .slnx files in root and src directories
+          if find . -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) | grep -q . || \
+             find src -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | grep -q .; then
+            echo "has_solution=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_solution=false" >> $GITHUB_OUTPUT
+            echo "No solution file found - skipping build"
+          fi
+
+      - name: Restore dependencies
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet restore
+
+      - name: Build
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        if: steps.check-sln.outputs.has_solution == 'true'
+        run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        if: always() && steps.check-sln.outputs.has_solution == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: test-results
+          path: '**/test-results.trx'
+          retention-days: 7
+
+      - name: Warn if no solution
+        if: steps.check-sln.outputs.has_solution != 'true'
+        run: echo "::warning::No solution file found - build and tests were skipped"

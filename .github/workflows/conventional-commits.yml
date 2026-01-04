@@ -1,0 +1,38 @@
+name: Conventional Commits
+
+on:
+  pull_request:
+    branches: [main]
+
+# Explicit permissions for security (principle of least privilege)
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # SHA-pinned for supply chain security
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: webiny/action-conventional-commits@8bc41ff4e7d423d56fa4905f6ff79209a78776c7  # v1.3.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          allowed-commit-types: "feat,fix,docs,style,refactor,perf,test,chore,build,ci"
+
+      - name: Validate PR title
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # PR title should follow conventional commits (used for squash merge)
+          # Scope restricted to alphanumeric, hyphens, underscores, dots (kebab-case recommended)
+          if ! echo "$PR_TITLE" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|chore|build|ci)(\([a-zA-Z0-9._-]+\))?(!)?: .+"; then
+            echo "::error::PR title must follow conventional commits format"
+            echo "Expected: <type>[optional scope][!]: <description>"
+            echo "Examples: feat: add user auth, fix(api): handle null response, feat!: breaking change"
+            exit 1
+          fi

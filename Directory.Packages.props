@@ -1,0 +1,43 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <!-- Prevent version overrides in individual projects - enforces consistency -->
+    <CentralPackageVersionOverrideEnabled>false</CentralPackageVersionOverrideEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Centralized Package Management (CPM)
+      https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management
+
+      Add package versions here as projects are created. Individual .csproj files
+      reference packages WITHOUT Version attributes; versions are managed here.
+
+      Baseline packages for .NET 10 Aspire projects (uncomment as needed):
+    -->
+
+    <!-- Core .NET 10 -->
+    <!-- <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" /> -->
+    <!-- <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" /> -->
+    <!-- <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" /> -->
+    <!-- <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.0" /> -->
+
+    <!-- Entity Framework Core 10 -->
+    <!-- <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0" /> -->
+    <!-- <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" /> -->
+    <!-- <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" /> -->
+
+    <!-- .NET Aspire -->
+    <!-- <PackageVersion Include="Aspire.Hosting" Version="9.1.0" /> -->
+    <!-- <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.1.0" /> -->
+
+    <!-- Testing -->
+    <!-- <PackageVersion Include="xunit.v3" Version="1.0.0" /> -->
+    <!-- <PackageVersion Include="Shouldly" Version="4.2.1" /> -->
+    <!-- <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" /> -->
+
+    <!-- Global analyzers (uncomment to apply to ALL projects) -->
+    <!-- <GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.4.0.108396" /> -->
+  </ItemGroup>
+</Project>

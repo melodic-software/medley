@@ -11,6 +11,31 @@
 *.sln.docstates
 *.env
 
+# ASP.NET Core configuration
+# https://learn.microsoft.com/en-us/aspnet/core/fundamentals/environments
+#
+# ENVIRONMENT NAMING (Microsoft convention):
+#   Development = LOCAL developer machine (not deployed servers!)
+#   Staging     = Pre-production
+#   Production  = Live (default if ASPNETCORE_ENVIRONMENT not set)
+#
+# For deployed non-production servers, use custom names:
+#   CI, Dev, Integration, QA, etc. → appsettings.CI.json, appsettings.Dev.json
+#
+# appsettings.Development.json is COMMITTED (shared local dev settings)
+# Use `dotnet user-secrets` for secrets: https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets
+
+# Machine-specific config overrides (requires manual registration in Program.cs)
+appsettings.Local.json
+appsettings.*.local.json
+
+# Launch profiles - machine-specific ports and environment variables
+**/Properties/launchSettings.json
+launchSettings.json
+
+# User secrets storage (dotnet user-secrets stores in %APPDATA%, not here)
+secrets.json
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -327,9 +352,7 @@ node_modules/
 *.dsw
 *.dsp
 
-# Visual Studio 6 technical files
-*.ncb
-*.aps
+# Visual Studio 6 technical files (duplicates removed - already in Visual C++ cache files section)
 
 # Visual Studio LightSwitch build output
 **/*.HTMLClient/GeneratedArtifacts
@@ -426,3 +449,62 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# =============================================================================
+# Claude Code (project-level paths only)
+# https://github.com/anthropics/claude-code
+# https://code.claude.com/docs/en/settings#what-uses-scopes
+# =============================================================================
+
+# Windows null device artifact
+# Claude Code's Bash tool may create this file due to Unix/Windows shell
+# redirection mismatch. See: https://github.com/anthropics/claude-code/issues/4928
+nul
+
+# Local overrides (auto-gitignored by Claude Code, but explicit is better)
+# https://code.claude.com/docs/en/settings - "Claude Code will configure git to ignore"
+# https://code.claude.com/docs/en/memory - "automatically added to .gitignore"
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Temporary/scratch files (project convention for ephemeral Claude work)
+.claude/temp/
+
+# Agent transcript files (runtime logs, NOT agent definitions)
+# Transcripts are stored as agent-{agentId}.jsonl in project directory
+# Agent definitions (.claude/agents/*.md) SHOULD be committed
+# https://code.claude.com/docs/en/sub-agents
+agent-*.jsonl
+
+# NOTE: Runtime/state directories (sessions, debug, plans, history.jsonl)
+# exist at USER level (~/.claude/), not project level - no rules needed here.
+#
+# The following project paths SHOULD be committed (team-shared):
+#   CLAUDE.md              - Project instructions (or .claude/CLAUDE.md)
+#   .claude/settings.json  - Team permissions, hooks, plugins
+#   .claude/rules/         - Modular architectural guidelines
+#   .claude/commands/      - Project slash commands
+#   .claude/agents/*.md    - Subagent definitions
+#   .mcp.json              - Project-scoped MCP servers (at repo root)
+
+# =============================================================================
+# .NET 10 / Aspire Additional Patterns
+# =============================================================================
+
+# Runtime configuration (development)
+*.runtimeconfig.dev.json
+
+# Aspire local state and runtime files
+# Reference: https://github.com/dotnet/aspire/blob/main/.gitignore
+.aspire/
+.state/
+*.local.state.json
+AppHost.local.state.json
+
+# Aspire dashboard cache (local development)
+.dashboard/
+.dashboard-cache/

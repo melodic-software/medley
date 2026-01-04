@@ -1,0 +1,24 @@
+name: 'Update .NET SDK'
+
+on:
+  schedule:
+    - cron: '0 6 * * 2'  # Weekly on Tuesdays at 6 AM UTC (after Dependabot on Mondays)
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-sdk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
+
+      - uses: martincostello/update-dotnet-sdk@a832b148de803dd5bcba5dbedb4ca75f20c3a0c4  # v5.0.0
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          labels: 'type:chore,area:build'
+          user-email: 'github-actions[bot]@users.noreply.github.com'
+          user-name: 'github-actions[bot]'

@@ -22,14 +22,17 @@
 # .NET Source Files
 ###############################################################################
 *.cs           text diff=csharp
+# VB.NET and F# lack built-in Git diff drivers (unlike C#); use plain text diffing
 *.vb           text
 *.fs           text
 *.fsx          text
 *.resx         text
 
-# Razor / Blazor
-*.razor        text
-*.cshtml       text
+# Razor / Blazor - includes scoped CSS for CSS isolation
+# See: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation
+*.razor        text diff=csharp
+*.razor.css    text eol=lf
+*.cshtml       text diff=csharp
 
 # Project and build files
 *.csproj       text
@@ -40,10 +43,17 @@
 *.props        text
 *.targets      text
 
-# Solution files require CRLF for Visual Studio compatibility
+# Test and publish settings
+*.runsettings  text
+*.pubxml       text
+
+# Solution files require CRLF - Visual Studio shell extension can crash Windows Explorer
+# with LF endings (verified VS 2022/2024). CRLF is still mandatory for .sln files.
+# See: https://lenholgate.com/blog/2024/06/visual-studio-solution-files-with-unix-line-ends-crash-explorer.html
 *.sln          text eol=crlf
 
-# New XML solution format (.NET 10+) - uses LF (XML standard)
+# New XML solution format (.NET 10+) - uses LF for cross-platform CLI compatibility
+# Unlike .sln, this format was designed for dotnet CLI and works with LF on all platforms
 # See: https://devblogs.microsoft.com/visualstudio/new-simpler-solution-file-format/
 *.slnx         text eol=lf
 
@@ -51,24 +61,35 @@
 # Web / Frontend Source Files
 ###############################################################################
 # Frontend markup/styles - Force LF for tooling consistency (Prettier, Stylelint default to LF)
-*.html         text eol=lf
-*.htm          text eol=lf
+# diff=html is a Git built-in driver for better hunk headers
+*.html         text eol=lf diff=html
+*.htm          text eol=lf diff=html
 *.css          text eol=lf
 *.scss         text eol=lf
 *.sass         text eol=lf
 *.less         text eol=lf
 
 # JavaScript/TypeScript - Force LF for tooling compatibility (webpack, esbuild, etc.)
-# Per Angular's .gitattributes: "JS and TS files must always use LF for tools to work"
+# Based on Angular's .gitattributes pattern (*.js, *.ts), extended for all JS/TS variants
 *.js           text eol=lf
 *.jsx          text eol=lf
 *.ts           text eol=lf
 *.tsx          text eol=lf
 *.mjs          text eol=lf
 *.cjs          text eol=lf
+*.mts          text eol=lf
+*.cts          text eol=lf
+
+# Minified files - suppress diff noise if checked in (should be gitignored)
+*.min.js       text eol=lf -diff
+*.min.css      text eol=lf -diff
 
 # Vue single-file components
 *.vue          text eol=lf
+
+# Svelte and Astro components
+*.svelte       text eol=lf
+*.astro        text eol=lf
 
 # Config files
 *.json         text
@@ -76,21 +97,11 @@
 *.config       text
 
 ###############################################################################
-# Blazor WebAssembly SRI Integrity
-# These files must use LF to pass SubResource Integrity checks
-###############################################################################
-jquery*.js     text eol=lf
-jquery*.map    text eol=lf
-bootstrap*.js  text eol=lf
-bootstrap*.css text eol=lf
-bootstrap*.map text eol=lf
-
-###############################################################################
 # Shell Scripts - Force LF (required for Unix execution)
 ###############################################################################
 *.sh           text eol=lf
 *.bash         text eol=lf
-.husky/*       text eol=lf
+.husky/**      text eol=lf
 
 ###############################################################################
 # Windows Batch Scripts - Force CRLF (cmd.exe requires CRLF)
@@ -120,8 +131,15 @@ docker-compose*.yaml text eol=lf
 ###############################################################################
 # CI/CD and Config Files
 ###############################################################################
-*.yaml         text
-*.yml          text
+# CI/CD pipeline files - Force LF for cross-platform consistency
+azure-pipelines*.yml  text eol=lf
+azure-pipelines*.yaml text eol=lf
+.github/**/*.yml      text eol=lf
+.github/**/*.yaml     text eol=lf
+
+# General YAML/config - Force LF for consistency with CI/CD YAML files above
+*.yaml         text eol=lf
+*.yml          text eol=lf
 *.toml         text
 Makefile       text eol=lf
 makefile       text eol=lf
@@ -140,19 +158,54 @@ package.json      text
 vite.config.*     text
 webpack.config.*  text
 
+# Node.js / npm / yarn / pnpm config
+.npmrc            text
+.npmignore        text
+.yarnrc           text
+.yarnrc.yml       text eol=lf
+.pnpmfile.cjs     text eol=lf
+pnpm-workspace.yaml text eol=lf
+.nvmrc            text
+.node-version     text
+
+# PWA / Web App Manifests
+*.webmanifest     text
+
+# API and schema files
+*.graphql      text
+*.gql          text
+*.proto        text
+*.http         text
+*.rest         text
+
+# Azure IaC
+*.bicep        text
+*.bicepparam   text
+
+# SQL scripts - Force LF for cross-platform consistency (SSMS handles LF fine)
+*.sql          text eol=lf
+
+# Environment files - Force LF for cross-platform dotenv compatibility
+# Dotenv libraries expect LF-terminated lines; CRLF can cause parsing errors
+.env           text eol=lf
+.env.*         text eol=lf
+
 ###############################################################################
-# Lock Files - Binary to prevent merge conflicts
-# These are machine-generated and should be regenerated, not merged
+# Lock Files - Text with binary merge driver
+# Shows diffs in PRs but uses binary merge strategy (always marks as conflicted on
+# concurrent changes - resolve by regenerating: delete file, run package manager)
+# See: https://dev.to/cloudx/resolving-git-conflicts-in-package-lockjson-using-a-merge-driver-2ipk
 ###############################################################################
-package-lock.json    binary
-yarn.lock            binary
-pnpm-lock.yaml       binary
-packages.lock.json   binary
+package-lock.json    text eol=lf merge=binary
+yarn.lock            text eol=lf merge=binary
+pnpm-lock.yaml       text eol=lf merge=binary
+packages.lock.json   text eol=lf merge=binary
 
 ###############################################################################
 # Documentation
 ###############################################################################
 *.md           text
+*.mdx          text
 *.txt          text
 *.rst          text
 LICENSE        text
@@ -179,10 +232,14 @@ CHANGELOG.*    text
 *.gif          binary
 *.ico          binary
 *.webp         binary
-*.svg          binary
+*.svg          text
 *.bmp          binary
 *.tif          binary
 *.tiff         binary
+*.avif         binary
+*.apng         binary
+*.heic         binary
+*.heif         binary
 
 # Fonts
 *.woff         binary
@@ -228,6 +285,7 @@ CHANGELOG.*    text
 *.7z           binary
 *.rar          binary
 *.bz2          binary
+*.xz           binary
 
 # Databases
 *.sqlite       binary
@@ -244,9 +302,12 @@ CHANGELOG.*    text
 *.wmv          binary
 *.ogg          binary
 *.webm         binary
+*.flac         binary
+*.aac          binary
+*.m4a          binary
 
-# Source maps (can be large, treat as binary)
-*.map          binary
+# Source maps - JSON text files, use LF for consistent checksums
+*.map          text eol=lf
 
 ###############################################################################
 # GitHub Linguist - Repository language statistics
@@ -266,3 +327,15 @@ CHANGELOG.*    text
 
 # Documentation (don't skew language percentages)
 docs/**              linguist-documentation
+
+###############################################################################
+# Export Ignore - Exclude from git archive distributions
+###############################################################################
+.github/         export-ignore
+.vscode/         export-ignore
+.idea/           export-ignore
+tests/           export-ignore
+test/            export-ignore
+# Test project directories (matches *.Tests at any level)
+*.Tests/         export-ignore
+*.Tests/**       export-ignore

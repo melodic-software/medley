@@ -1,0 +1,34 @@
+name: 'Manage stale issues and PRs'
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly on Mondays at 6 AM UTC (matches dependabot)
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/stale@997185467fa4f803885201cee163a9f38240193d  # v10.1.1
+        with:
+          days-before-stale: 60
+          days-before-close: 14
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          stale-issue-message: >
+            This issue has been automatically marked as stale due to 60 days of inactivity.
+            It will be closed in 14 days if no further activity occurs.
+            Comment to keep this issue open.
+          stale-pr-message: >
+            This PR has been automatically marked as stale due to 60 days of inactivity.
+            It will be closed in 14 days if no further activity occurs.
+            Comment or push changes to keep this PR open.
+          close-issue-message: 'Closed due to prolonged inactivity. Feel free to reopen if still relevant.'
+          close-pr-message: 'Closed due to prolonged inactivity. Feel free to reopen if still relevant.'
+          exempt-issue-labels: 'keep-open,security,priority,type:bug'
+          exempt-pr-labels: 'keep-open,security,priority'
+          exempt-all-assignees: true  # Don't mark issues with assignees as stale
