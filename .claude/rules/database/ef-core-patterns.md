@@ -137,8 +137,8 @@ Features by version (use minimum version that includes needed feature):
    // Define named filters (use constants to avoid typos)
    public static class Filters
    {
-       public const string SoftDelete = nameof(SoftDelete);
-       public const string Tenant = nameof(Tenant);
+       public const string SoftDelete = "SoftDelete";
+       public const string Tenant = "Tenant";
    }
 
    builder.HasQueryFilter(Filters.SoftDelete, x => !x.IsDeleted);

@@ -37,6 +37,8 @@ Key conventions reinforced from `.editorconfig`. Full rules enforced by analyzer
 
 ## C# 14 Features (Use When Appropriate)
 
+All features below are stable and released with .NET 10 (November 2025).
+
 - **Primary constructors** for simple DI
 - **Collection expressions** `[1, 2, 3]`
 - **Pattern matching** for type checks

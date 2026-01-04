@@ -27,14 +27,14 @@ jobs:
         uses: actions/setup-dotnet@2016bd2012dba4e32de620c46fe006a3ac9f0602  # v5.0.1
         with:
           global-json-file: global.json
-          cache: true
-          cache-dependency-path: '**/packages.lock.json'
+          # cache: true  # Will be enabled when packages.lock.json exists
 
       - name: Check for solution files
         id: check-sln
         run: |
           # Check for .sln and .slnx files in root and src directories
-          if ls ./*.sln ./*.slnx src/*.sln src/*.slnx 2>/dev/null | head -1 | grep -q .; then
+          if find . -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) | grep -q . || \
+             find src -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | grep -q .; then
             echo "has_solution=true" >> $GITHUB_OUTPUT
           else
             echo "has_solution=false" >> $GITHUB_OUTPUT
