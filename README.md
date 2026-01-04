@@ -1,6 +1,10 @@
 # Medley
 
+[![CI](https://github.com/melodic-software/medley/actions/workflows/ci.yml/badge.svg)](https://github.com/melodic-software/medley/actions/workflows/ci.yml)
+
 A modular monolith application built with modern .NET technologies.
+
+> **Status**: Pre-MVP scaffolding phase. Build infrastructure, CI/CD, and architectural guidelines are in place. Source code implementation is next.
 
 ## Tech Stack
 
@@ -9,9 +13,11 @@ A modular monolith application built with modern .NET technologies.
 | .NET | 10.0 (LTS) | Runtime & SDK |
 | C# | 14 | Language |
 | Blazor | Interactive Auto | UI Framework |
-| Aspire | 13.x | Orchestration & Observability |
+| [Aspire](https://aspire.dev) | 13.1+ | Orchestration & Observability |
 | Duende IdentityServer | 7.4.x | Security Token Service |
 | Duende BFF | Latest | Backend for Frontend (Blazor) |
+
+> **Note**: Aspire version numbering jumped from 9.x to 13.x in November 2025 to align with its rebranding as a polyglot platform. See the [Aspire 13 announcement](https://devblogs.microsoft.com/aspire/aspire13/) for historical context.
 
 ## Architecture
 
@@ -35,6 +41,14 @@ Features are organized as **vertical slices** across layers, keeping related cod
 ### CQRS Pattern
 
 Commands and Queries are separated following the **CQS/CQRS** pattern for clarity and scalability.
+
+### Gateway Architecture (Planned)
+
+External traffic routes through dual YARP gateways:
+- **App Gateway** (`apps.melodicsoftware.com`) - UI, BFF, IdentityServer
+- **API Gateway** (`api.melodicsoftware.com`) - Module APIs
+
+See [BACKLOG.md](docs/BACKLOG.md#gateway-architecture-yarp-via-aspire) for implementation details.
 
 ## Code Quality
 
@@ -61,7 +75,9 @@ Commands and Queries are separated following the **CQS/CQRS** pattern for clarit
 - **Duende BFF** - Secure token handling for Blazor UI
 - **Passkey Support** - .NET 10 native passkey integration
 
-## Project Structure (Planned)
+## Project Structure
+
+> **Planned** - This is the target structure to be implemented.
 
 ```
 medley/
@@ -71,8 +87,14 @@ medley/
 │   ├── Medley.Web/               # Blazor UI + BFF
 │   ├── Medley.IdentityServer/    # Duende IdentityServer
 │   ├── Medley.Analyzers/         # Custom Roslyn analyzers
+│   ├── SharedKernel/             # Cross-cutting abstractions
 │   └── Modules/
-│       └── [Feature]/
+│       ├── Auth/                 # Authentication module
+│       │   ├── Domain/
+│       │   ├── Application/
+│       │   ├── Infrastructure/
+│       │   └── Presentation/
+│       └── [Feature]/            # Additional feature modules
 │           ├── Domain/
 │           ├── Application/
 │           ├── Infrastructure/
@@ -80,13 +102,22 @@ medley/
 ├── tests/
 │   ├── Architecture.Tests/       # NetArchTest rules
 │   └── [Feature].Tests/
-└── docs/
+├── docs/
+└── infrastructure/               # IaC (Bicep/Terraform)
 ```
 
 ## Getting Started
 
-> Documentation coming soon.
+### Prerequisites
+
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+
+### Development
+
+Source code scaffolding is in progress. See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow and conventions.
 
 ## License
 
-Private - All rights reserved.
+Proprietary - see [LICENSE](LICENSE) for details.
+
+Copyright 2026 Melodic Software. All rights reserved.
