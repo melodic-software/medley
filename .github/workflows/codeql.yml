@@ -54,7 +54,7 @@ jobs:
         if: steps.check-sln.outputs.has_solution == 'true'
         # UseSharedCompilation=false ensures CodeQL can trace compiler process arguments
         # See: https://github.com/github/codeql-action/issues/3208
-        run: dotnet build --configuration Release /p:UseSharedCompilation=false
+        run: dotnet build Medley.slnx --configuration Release /p:UseSharedCompilation=false
 
       - name: Warn if no solution
         if: steps.check-sln.outputs.has_solution != 'true'
