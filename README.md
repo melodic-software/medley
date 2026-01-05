@@ -77,7 +77,7 @@ See [BACKLOG.md](docs/BACKLOG.md#gateway-architecture-yarp-via-aspire) for imple
 
 ## Project Structure
 
-> **Planned** - This is the target structure to be implemented.
+> **In Progress** - Core infrastructure is in place. Projects marked "(planned)" are next.
 
 ```
 medley/
@@ -88,11 +88,12 @@ medley/
 │   ├── Medley.IdentityServer/       # Duende IdentityServer
 │   │
 │   ├── SharedKernel/                # Cross-cutting DDD building blocks
-│   │   ├── SharedKernel/            # Core: Entity, ValueObject, Result, DomainEvent
-│   │   ├── SharedKernel.Application/   # CQRS: Commands, Queries, Behaviors
-│   │   ├── SharedKernel.Infrastructure/  # EF interceptors, repositories
-│   │   ├── SharedKernel.Contracts/  # Integration events, shared DTOs
-│   │   └── SharedKernel.Analyzers/  # Custom Roslyn analyzers (naming, architecture)
+│   │   ├── SharedKernel/            # Core: Entity, ValueObject, Result, DomainEvent (planned)
+│   │   ├── SharedKernel.Application/   # CQRS: Commands, Queries, Behaviors (planned)
+│   │   ├── SharedKernel.Infrastructure/  # EF interceptors, repositories (planned)
+│   │   ├── SharedKernel.Contracts/  # Integration events, shared DTOs (planned)
+│   │   ├── SharedKernel.Analyzers/  # Custom Roslyn analyzers (naming, architecture)
+│   │   └── SharedKernel.Analyzers.CodeFixes/  # Code fix providers
 │   │
 │   └── Modules/
 │       └── {ModuleName}/            # e.g., Users, Orders
@@ -103,15 +104,11 @@ medley/
 │
 ├── tests/
 │   ├── SharedKernel/
-│   │   ├── SharedKernel.Tests/
-│   │   ├── SharedKernel.Application.Tests/
-│   │   └── SharedKernel.Infrastructure.Tests/
+│   │   ├── SharedKernel.Analyzers.Tests/  # Analyzer unit tests
+│   │   └── ...                      # Additional test projects (planned)
 │   ├── Modules/
-│   │   └── {ModuleName}/
-│   │       ├── {ModuleName}.Domain.Tests/
-│   │       ├── {ModuleName}.Application.Tests/
-│   │       └── {ModuleName}.Integration.Tests/
-│   └── Architecture.Tests/          # NetArchTest boundary enforcement
+│   │   └── {ModuleName}/            # Module test projects (planned)
+│   └── Architecture.Tests/          # NetArchTest boundary enforcement (planned)
 │
 ├── docs/
 └── infrastructure/                  # IaC (Bicep/Terraform)

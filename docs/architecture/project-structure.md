@@ -14,11 +14,12 @@ src/
 ├── Medley.IdentityServer/       # Duende IdentityServer
 │
 ├── SharedKernel/                # Cross-cutting DDD building blocks
-│   ├── SharedKernel/            # Core: Entity, ValueObject, Result, DomainEvent
-│   ├── SharedKernel.Application/   # CQRS: Commands, Queries, Behaviors
-│   ├── SharedKernel.Infrastructure/  # EF interceptors, repositories
-│   ├── SharedKernel.Contracts/  # Integration events, shared DTOs
-│   └── SharedKernel.Analyzers/  # Roslyn analyzers (future)
+│   ├── SharedKernel/            # Core: Entity, ValueObject, Result, DomainEvent (planned)
+│   ├── SharedKernel.Application/   # CQRS: Commands, Queries, Behaviors (planned)
+│   ├── SharedKernel.Infrastructure/  # EF interceptors, repositories (planned)
+│   ├── SharedKernel.Contracts/  # Integration events, shared DTOs (planned)
+│   ├── SharedKernel.Analyzers/  # Custom Roslyn analyzers (naming, architecture)
+│   └── SharedKernel.Analyzers.CodeFixes/  # Code fix providers for analyzers
 │
 └── Modules/
     └── {ModuleName}/            # e.g., Users, Orders
@@ -29,15 +30,16 @@ src/
 
 tests/
 ├── SharedKernel/
-│   ├── SharedKernel.Tests/
-│   ├── SharedKernel.Application.Tests/
-│   └── SharedKernel.Infrastructure.Tests/
+│   ├── SharedKernel.Analyzers.Tests/  # Analyzer unit tests
+│   ├── SharedKernel.Tests/            # (planned)
+│   ├── SharedKernel.Application.Tests/  # (planned)
+│   └── SharedKernel.Infrastructure.Tests/  # (planned)
 ├── Modules/
 │   └── {ModuleName}/
 │       ├── {ModuleName}.Domain.Tests/
 │       ├── {ModuleName}.Application.Tests/
 │       └── {ModuleName}.Integration.Tests/
-└── Architecture.Tests/          # NetArchTest boundary enforcement
+└── Architecture.Tests/          # NetArchTest boundary enforcement (planned)
 
 docs/
 infrastructure/
@@ -56,6 +58,7 @@ infrastructure/
 | `SharedKernel.Infrastructure` | `Melodic.SharedKernel.Infrastructure` |
 | `SharedKernel.Contracts` | `Melodic.SharedKernel.Contracts` |
 | `SharedKernel.Analyzers` | `Melodic.SharedKernel.Analyzers` |
+| `SharedKernel.Analyzers.CodeFixes` | `Melodic.SharedKernel.Analyzers.CodeFixes` |
 | `{Module}.Domain` | N/A (internal) |
 | `{Module}.Application` | N/A (internal) |
 | `{Module}.Infrastructure` | N/A (internal) |
