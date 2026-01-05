@@ -9,10 +9,10 @@ Guidance for Claude Code when working with this repository.
 
 | Task | Command |
 |------|---------|
-| Build | `dotnet build --configuration Release` |
-| Test | `dotnet test --configuration Release --verbosity normal` |
+| Build | `dotnet build Medley.slnx --configuration Release` |
+| Test | `dotnet test Medley.slnx --configuration Release --verbosity normal` |
 | Run Dev | `dotnet run --project src/Medley.AppHost` |
-| Single Test | `dotnet test --filter "FullyQualifiedName~TestName"` |
+| Single Test | `dotnet test Medley.slnx --filter "FullyQualifiedName~TestName"` |
 
 ## Project Overview
 
@@ -30,9 +30,9 @@ See [Database Migrations](docs/database-migrations.md) for per-module EF Core mi
 
 | Task | Command |
 |------|---------|
-| Clean build | `dotnet clean && dotnet build` |
+| Clean build | `dotnet clean Medley.slnx && dotnet build Medley.slnx` |
 | Watch mode | `dotnet watch --project src/Medley.Web` |
-| Run tests with coverage | `dotnet test --collect:"XPlat Code Coverage"` |
+| Run tests with coverage | `dotnet test Medley.slnx --collect:"XPlat Code Coverage"` |
 
 ## Commit Convention
 

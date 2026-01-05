@@ -56,7 +56,7 @@ permissions:
 
 ### .NET Build Pattern
 
-Standard .NET workflow steps:
+Standard .NET workflow steps (always specify solution file):
 
 ```yaml
 - uses: actions/setup-dotnet@v5
@@ -64,9 +64,9 @@ Standard .NET workflow steps:
     global-json-file: global.json
     cache: true
     cache-dependency-path: '**/packages.lock.json'
-- run: dotnet restore
-- run: dotnet build --configuration Release --no-restore
-- run: dotnet test --configuration Release --no-build --verbosity normal
+- run: dotnet restore Medley.slnx
+- run: dotnet build Medley.slnx --configuration Release --no-restore
+- run: dotnet test Medley.slnx --configuration Release --no-build --verbosity normal
 ```
 
 ### Timeout Guidelines
