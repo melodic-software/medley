@@ -22,6 +22,13 @@ area:blazor:
           - 'src/Medley.Web/**/*.razor'
           - 'src/Medley.Web/**/*.razor.cs'
 
+area:api:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'src/Medley.Web/**/Endpoints/**'
+          - 'src/Medley.Web/**/Controllers/**'
+          - 'src/Modules/**/Endpoints/**'
+
 area:shared-kernel:
   - changed-files:
       - any-glob-to-any-file:

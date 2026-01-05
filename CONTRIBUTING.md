@@ -75,6 +75,8 @@ chore: update NuGet packages to latest versions
 - No new analyzer warnings (treated as errors)
 - Architecture tests must pass
 
+See [tests/CLAUDE.md](tests/CLAUDE.md) for detailed testing conventions (xUnit v3, Shouldly, naming patterns).
+
 ## Security
 
 For security-related contributions or to report vulnerabilities, see [SECURITY.md](SECURITY.md).

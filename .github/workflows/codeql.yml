@@ -5,10 +5,16 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  merge_group:  # Required for merge queue support
   schedule:
     - cron: '0 6 * * 1' # Every Monday at 6:00 AM UTC
+  workflow_dispatch:  # Manual trigger for testing
 
-# Explicit permissions for security (principle of least privilege)
+# Prevent duplicate runs, cancel stale scans when new commits arrive
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -24,7 +30,6 @@ jobs:
       contents: read
 
     steps:
-      # SHA-pinned for supply chain security
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6.0.1
 
@@ -36,15 +41,7 @@ jobs:
 
       - name: Check for solution files
         id: check-sln
-        run: |
-          # Check for .sln and .slnx files in root and src directories
-          if find . -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) | grep -q . || \
-             find src -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | grep -q .; then
-            echo "has_solution=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_solution=false" >> $GITHUB_OUTPUT
-            echo "No solution file found - skipping CodeQL build"
-          fi
+        uses: ./.github/actions/check-solution
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@5d4e8d1aca955e8d8589aabd499c5cae939e33c7  # v4.31.9
@@ -62,6 +59,14 @@ jobs:
       - name: Warn if no solution
         if: steps.check-sln.outputs.has_solution != 'true'
         run: echo "::warning::No solution file found - CodeQL build was skipped"
+
+      # Scheduled security scans MUST complete - fail loudly if no solution
+      - name: Fail scheduled run if no solution
+        if: github.event_name == 'schedule' && steps.check-sln.outputs.has_solution != 'true'
+        run: |
+          echo "::error::Scheduled CodeQL security scan failed - no solution file found"
+          echo "Security scans require a buildable solution. Investigate immediately."
+          exit 1
 
       - name: Perform CodeQL Analysis
         if: steps.check-sln.outputs.has_solution == 'true'

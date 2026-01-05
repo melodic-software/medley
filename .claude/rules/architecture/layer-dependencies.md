@@ -3,33 +3,17 @@ paths:
   - "src/**/*.cs"
 ---
 
-<!-- ~150 tokens -->
+<!-- ~50 tokens -->
 
-# Clean Architecture Layer Dependencies
+# Layer Dependencies
 
-## Layer Hierarchy (innermost to outermost)
+**SSOT:** [docs/architecture/project-structure.md](../../../docs/architecture/project-structure.md#layer-dependencies)
+
+## Quick Reference
 
 ```
-Domain → Application → Infrastructure → Presentation
+Domain -> Application -> Infrastructure -> Presentation
 ```
-
-## Rules
-
-1. **Domain layer** - No dependencies on other layers
-   - Contains: Entities, Value Objects, Domain Events, Repository interfaces
-   - References: Only primitives and .NET BCL
-
-2. **Application layer** - Depends only on Domain
-   - Contains: Commands, Queries, Handlers, DTOs, Application Services
-   - References: Domain layer, MediatR abstractions (via our interfaces)
-
-3. **Infrastructure layer** - Implements abstractions from inner layers
-   - Contains: EF Core DbContext, Repository implementations, External service clients
-   - References: Domain, Application layers
-
-4. **Presentation layer** - Entry point, depends on all layers for DI
-   - Contains: API Controllers, Blazor components, Middleware
-   - References: All layers (for composition root only)
 
 ## Prohibited
 

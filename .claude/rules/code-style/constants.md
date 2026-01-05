@@ -3,7 +3,7 @@ paths:
   - "**/*.cs"
 ---
 
-<!-- ~400 tokens -->
+<!-- ~800 tokens -->
 
 # Constants and Magic Strings
 

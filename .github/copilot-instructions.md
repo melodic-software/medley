@@ -8,48 +8,9 @@ Medley is a .NET 10 modular monolith application using C# 14, following trunk-ba
 
 ## Commit Convention (REQUIRED)
 
-All commits **must** follow [Conventional Commits](https://www.conventionalcommits.org/) format:
+All commits **must** follow [Conventional Commits](https://www.conventionalcommits.org/) format.
 
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-### Commit Types
-
-| Type | Description | Example Scope |
-|------|-------------|---------------|
-| `feat` | New feature | `auth`, `blazor`, `api` |
-| `fix` | Bug fix | module name |
-| `docs` | Documentation only | - |
-| `style` | Formatting, no code change | - |
-| `refactor` | Code change, no new feature or fix | module name |
-| `perf` | Performance improvement | module name |
-| `test` | Adding/updating tests | module name |
-| `chore` | Maintenance tasks | `deps` |
-| `build` | Build system changes | - |
-| `ci` | CI/CD changes | `deps` |
-
-### Examples
-
-```
-feat(auth): add passkey authentication support
-fix(blazor): resolve hydration issue on login page
-docs: update README with deployment instructions
-chore(deps): update NuGet packages to latest versions
-ci(deps): bump actions/checkout from 4.1.0 to 4.2.0
-```
-
-### Commit Message Guidelines
-
-- Use imperative mood: "add feature" not "added feature"
-- Keep subject line under 72 characters
-- Do not end subject with a period
-- Separate subject from body with a blank line
-- Reference issues in footer: `Closes #123`
+See [CONTRIBUTING.md](../CONTRIBUTING.md#commit-messages-conventional-commits) for the full format, types, and examples.
 
 ## Code Style
 

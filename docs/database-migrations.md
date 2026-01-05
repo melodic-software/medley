@@ -96,17 +96,17 @@ Example GitHub Actions step:
       --output ${{ github.workspace }}/migration.sql
 
 - name: Upload Migration Script
-  uses: actions/upload-artifact@v4
+  uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6.0.0
   with:
-    name: migration-script  # v4 requires unique artifact names per workflow
+    name: migration-script
     path: migration.sql
 ```
 
-> **Note**: `actions/upload-artifact@v4` has breaking changes from v3:
+> **Note**: `actions/upload-artifact@v6` has breaking changes from earlier versions:
 > - Artifact names must be unique across the entire workflow run
 > - Hidden files are excluded by default (use `include-hidden-files: true` if needed)
 > - Same-name artifacts from different jobs no longer merge automatically
 
 ---
 
-*Last updated: 2026-01-03*
+*Last updated: 2026-01-04*

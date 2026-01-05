@@ -180,13 +180,15 @@ When extracting modules to microservices:
 
 Items with temporal context that may become stale:
 
-- [ ] **README.md:20** - Aspire 13→14 version note ("may be removed after Aspire 14 release")
+- [ ] **README.md** - Aspire "Historical Note" (in Tech Stack section) about version renumbering
   - Review when: Aspire 14 is released
   - Action: Remove the note or update if still relevant
+  - Search: `> **Historical Note**` in README.md
 
-- [ ] **docs/feature-flags.md:11-14** - Microsoft.FeatureManagement version note (4.4.0)
+- [ ] **docs/feature-flags.md** - Microsoft.FeatureManagement version note (in "Version Note" blockquote)
   - Review when: Quarterly or when updating packages
   - Action: Verify current version on NuGet, update "Last verified" date
+  - Search: `> **Version Note**` in docs/feature-flags.md
 
 - [ ] **.github/CODEOWNERS:7-8** - Team creation setup note
   - Review when: Team is created in GitHub Organization

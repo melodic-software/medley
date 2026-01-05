@@ -17,7 +17,7 @@ A modular monolith application built with modern .NET technologies.
 | Duende IdentityServer | 7.4.x | Security Token Service |
 | Duende BFF | Latest | Backend for Frontend (Blazor) |
 
-> **Note**: Aspire version numbering jumped from 9.x to 13.x in November 2025 to align with its rebranding as a polyglot platform. See the [Aspire 13 announcement](https://devblogs.microsoft.com/aspire/aspire13/) for historical context.
+> **Historical Note** (November 2025): Aspire version numbering jumped from 9.x to 13.x in November 2025 to align with its rebranding as a polyglot platform. See the [Aspire 13 announcement](https://devblogs.microsoft.com/aspire/aspire13/) for historical context.
 
 ## Architecture
 
@@ -82,29 +82,51 @@ See [BACKLOG.md](docs/BACKLOG.md#gateway-architecture-yarp-via-aspire) for imple
 ```
 medley/
 ├── src/
-│   ├── Medley.AppHost/           # Aspire orchestration
-│   ├── Medley.ServiceDefaults/   # Shared Aspire defaults
-│   ├── Medley.Web/               # Blazor UI + BFF
-│   ├── Medley.IdentityServer/    # Duende IdentityServer
-│   ├── Medley.Analyzers/         # Custom Roslyn analyzers
-│   ├── SharedKernel/             # Cross-cutting abstractions
+│   ├── Medley.AppHost/              # Aspire orchestrator
+│   ├── Medley.ServiceDefaults/      # Aspire shared defaults
+│   ├── Medley.Web/                  # Blazor UI + BFF (modular monolith host)
+│   ├── Medley.IdentityServer/       # Duende IdentityServer
+│   │
+│   ├── SharedKernel/                # Cross-cutting DDD building blocks
+│   │   ├── SharedKernel/            # Core: Entity, ValueObject, Result, DomainEvent
+│   │   ├── SharedKernel.Application/   # CQRS: Commands, Queries, Behaviors
+│   │   ├── SharedKernel.Infrastructure/  # EF interceptors, repositories
+│   │   ├── SharedKernel.Contracts/  # Integration events, shared DTOs
+│   │   └── SharedKernel.Analyzers/  # Custom Roslyn analyzers (naming, architecture)
+│   │
 │   └── Modules/
-│       ├── Auth/                 # Authentication module
-│       │   ├── Domain/
-│       │   ├── Application/
-│       │   ├── Infrastructure/
-│       │   └── Presentation/
-│       └── [Feature]/            # Additional feature modules
-│           ├── Domain/
-│           ├── Application/
-│           ├── Infrastructure/
-│           └── Presentation/
+│       └── {ModuleName}/            # e.g., Users, Orders
+│           ├── {ModuleName}.Domain/
+│           ├── {ModuleName}.Application/
+│           ├── {ModuleName}.Infrastructure/
+│           └── {ModuleName}.Contracts/
+│
 ├── tests/
-│   ├── Architecture.Tests/       # NetArchTest rules
-│   └── [Feature].Tests/
+│   ├── SharedKernel/
+│   │   ├── SharedKernel.Tests/
+│   │   ├── SharedKernel.Application.Tests/
+│   │   └── SharedKernel.Infrastructure.Tests/
+│   ├── Modules/
+│   │   └── {ModuleName}/
+│   │       ├── {ModuleName}.Domain.Tests/
+│   │       ├── {ModuleName}.Application.Tests/
+│   │       └── {ModuleName}.Integration.Tests/
+│   └── Architecture.Tests/          # NetArchTest boundary enforcement
+│
 ├── docs/
-└── infrastructure/               # IaC (Bicep/Terraform)
+└── infrastructure/                  # IaC (Bicep/Terraform)
 ```
+
+See [docs/architecture/](docs/architecture/) for detailed structure documentation.
+
+### Solution Files
+
+| Solution | Purpose |
+|----------|---------|
+| `Medley.slnx` | **Main solution** - Full application with all modules, tests, and infrastructure |
+| `Medley.Analyzers.slnx` | **Focused solution** - Roslyn analyzers only, for faster IDE load during analyzer development |
+
+> **Tip**: Use `Medley.Analyzers.slnx` when developing custom analyzers to avoid loading the full solution.
 
 ## Getting Started
 

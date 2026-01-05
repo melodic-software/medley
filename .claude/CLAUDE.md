@@ -1,5 +1,5 @@
 <!-- Last reviewed: 2026-01-04 -->
-<!-- ~800 tokens -->
+<!-- ~650 tokens -->
 <!-- Lazy-loaded: Only included when working in .claude/rules/ directory -->
 <!-- CANARY: RULES_META_V1_2026 -->
 
@@ -7,34 +7,28 @@
 
 This file provides guidance for creating and maintaining rules in `.claude/rules/`.
 
-## Deviations from Official Documentation
-
-This project uses YAML array syntax instead of the documented string syntax due to known bugs.
-
-| Aspect | Official Docs Say | We Do Instead | Why (Issue) |
-|--------|-------------------|---------------|-------------|
-| `paths:` syntax | `paths: "**/*.cs"` | `paths:`<br>`  - "**/*.cs"` | String syntax broken (#16038, #13905) |
-| Brace expansion | `paths: "**/*.{ts,tsx}"` | Separate array entries | Reserved YAML chars fail (#13905) |
-
 ## Frontmatter Syntax
 
-### Correct (Use This)
+**IMPORTANT:** Use YAML array syntax due to known bugs with official string syntax.
 
 ```yaml
+# ✅ Correct - YAML array syntax
 ---
 paths:
   - "src/**/*.cs"
   - "tests/**/*.cs"
 ---
-```
 
-### Incorrect (Documented But Broken)
-
-```yaml
+# ❌ Incorrect - These are broken
 paths: "src/**/*.cs"           # String syntax - #16038
 paths: src/**/*.cs             # Unquoted - YAML parse error
 paths: "**/*.{ts,tsx}"         # Brace expansion - #13905
 ```
+
+| What Official Docs Say | What We Do Instead | Why |
+|------------------------|-------------------|-----|
+| `paths: "**/*.cs"` | YAML array syntax | String syntax broken (#16038) |
+| `paths: "**/*.{ts,tsx}"` | Separate array entries | Brace expansion fails (#13905) |
 
 ## Loading vs Applying (CRITICAL)
 
@@ -107,3 +101,13 @@ paths:
 - [ ] Has "Prohibited" section for anti-patterns
 - [ ] Follows kebab-case filename convention
 - [ ] Under 800 tokens
+
+## Prohibited
+
+- String syntax for `paths:` field (use YAML array)
+- Unquoted glob patterns in frontmatter
+- Brace expansion in glob patterns (`{ts,tsx}`)
+- Rules without token estimate comments
+- Rules exceeding 800 tokens
+- PascalCase or snake_case filenames (use kebab-case)
+- Custom frontmatter fields beyond `paths:` (#13003)

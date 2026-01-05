@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Analyzers must target netstandard2.0 for Roslyn compatibility -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- Use latest language features available with netstandard2.0 -->
+    <LangVersion>latest</LangVersion>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <!-- Suppress IDE rules that suggest C# 8+ syntax incompatible with netstandard2.0 runtime -->
+    <!-- IDE0056: Use index operator (^n syntax) - requires System.Index runtime support -->
+    <!-- IDE0057: Use range operator ([..] syntax) - requires System.Range runtime support -->
+    <NoWarn>$(NoWarn);IDE0056;IDE0057</NoWarn>
+
+    <!-- NuGet package metadata -->
+    <PackageId>Melodic.SharedKernel.Analyzers</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Melodic Software</Authors>
+    <Description>Roslyn analyzers for enforcing Medley architecture patterns and module boundaries.</Description>
+    <PackageTags>analyzers;roslyn;ddd;modular-monolith;architecture</PackageTags>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+
+</Project>

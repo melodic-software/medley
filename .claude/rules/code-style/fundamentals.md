@@ -3,7 +3,7 @@ paths:
   - "**/*.cs"
 ---
 
-<!-- ~500 tokens -->
+<!-- ~650 tokens -->
 
 # Code Style Fundamentals
 
@@ -34,6 +34,22 @@ Key conventions reinforced from `.editorconfig`. Full rules enforced by analyzer
 | Parameter | camelCase | `userId` |
 | Local | camelCase | `userCount` |
 | Constant | PascalCase | `MaxRetryCount` |
+
+### Type Suffix Conventions
+
+Enforced by Roslyn analyzers (MDYNAME rules):
+
+| Type | Required Suffix | Example |
+|------|-----------------|---------|
+| Repository implementations | `Repository` | `UserRepository` |
+| FluentValidation validators | `Validator` | `CreateUserValidator` |
+| MediatR handlers | `Handler` | `CreateUserHandler` |
+| Specification classes | `Specification` | `ActiveUsersSpecification` |
+| EF Core configurations | `Configuration` | `UserConfiguration` |
+| Domain/Application services | `Service` | `EmailService` |
+| DTOs | `Dto` | `UserDto` |
+
+**Note**: Handler uses simple `Handler` suffix (not `CommandHandler`). Namespace provides context.
 
 ## C# 14 Features (Use When Appropriate)
 

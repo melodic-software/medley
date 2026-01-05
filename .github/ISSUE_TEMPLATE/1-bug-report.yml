@@ -64,9 +64,9 @@ body:
       label: .NET Version
       description: Which .NET version are you using?
       options:
-        - .NET 10
-        - .NET 9
-        - .NET 8 (LTS)
+        - .NET 10 (LTS)
+        - .NET 9 (STS - ends Nov 2026)
+        - .NET 8 (LTS - ends Nov 2026)
         - Other (specify below)
       default: 0
     validations:

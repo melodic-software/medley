@@ -1,0 +1,59 @@
+{
+  // ==========================================================================
+  // VS Code Settings for Medley
+  // ==========================================================================
+  // These settings ensure VS Code / C# Dev Kit respects .editorconfig rules
+  // and provides a consistent development experience.
+  // ==========================================================================
+
+  // ---------------------------------------------------------------------------
+  // Editor Settings
+  // ---------------------------------------------------------------------------
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": false,
+
+  // ---------------------------------------------------------------------------
+  // C# / .NET Settings
+  // ---------------------------------------------------------------------------
+  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+  "dotnet.server.useOmnisharp": false,
+
+  // C# formatting
+  "csharp.format.enable": true,
+
+  // Default formatter for C# files
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+
+  // ---------------------------------------------------------------------------
+  // OmniSharp Settings (if using OmniSharp instead of C# Dev Kit)
+  // ---------------------------------------------------------------------------
+  "omnisharp.enableEditorConfigSupport": true,
+  "omnisharp.enableRoslynAnalyzers": true,
+
+  // ---------------------------------------------------------------------------
+  // File Associations
+  // ---------------------------------------------------------------------------
+  "files.associations": {
+    "*.razor": "razor",
+    "*.cshtml": "razor"
+  },
+
+  // ---------------------------------------------------------------------------
+  // Exclude from Search/Watch
+  // ---------------------------------------------------------------------------
+  "files.watcherExclude": {
+    "**/bin/**": true,
+    "**/obj/**": true,
+    "**/.git/**": true,
+    "**/node_modules/**": true
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/*.g.cs": true,
+    "**/*.designer.cs": true
+  }
+}

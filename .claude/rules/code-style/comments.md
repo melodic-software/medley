@@ -3,6 +3,7 @@ paths:
   - "**/*.cs"
 ---
 
+<!-- Last reviewed: 2026-01-04 -->
 <!-- ~650 tokens -->
 
 # Comments and Documentation

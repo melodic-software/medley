@@ -1,0 +1,23 @@
+name: Check Solution Files
+description: Checks for .sln and .slnx solution files in root and src directories
+
+outputs:
+  has_solution:
+    description: Whether a solution file was found ('true' or 'false')
+    value: ${{ steps.check.outputs.has_solution }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check for solution files
+      id: check
+      shell: bash
+      run: |
+        # Check for .sln and .slnx files in root and src directories
+        if find . -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) | grep -q . || \
+           find src -maxdepth 1 \( -name "*.sln" -o -name "*.slnx" \) 2>/dev/null | grep -q .; then
+          echo "has_solution=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_solution=false" >> $GITHUB_OUTPUT
+          echo "No solution file found"
+        fi

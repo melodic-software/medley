@@ -1,5 +1,5 @@
 <!-- Last reviewed: 2026-01-04 -->
-<!-- ~1,500 tokens -->
+<!-- ~2,200 tokens -->
 <!-- Lazy-loaded: Only included when working in src/ Infrastructure projects -->
 
 # Infrastructure Patterns

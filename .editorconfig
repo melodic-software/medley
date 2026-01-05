@@ -2,7 +2,7 @@
 # EDITORCONFIG - Medley
 # =============================================================================
 # https://editorconfig.org
-# Target: .NET 10+ / C# 14+
+# Target: .NET 10 / C# 14
 # Last Updated: 2026-01-04
 #
 # REFERENCES:
@@ -228,6 +228,19 @@ csharp_space_between_square_brackets = false
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
 
+# -----------------------------------------------------------------------------
+# EXPERIMENTAL BLANK LINE FORMATTING (Strict Control)
+# -----------------------------------------------------------------------------
+# These rules enforce consistent blank line usage throughout the codebase.
+# Reference: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide2000-ide2006
+dotnet_style_allow_multiple_blank_lines_experimental = false:warning
+dotnet_style_allow_statement_immediately_after_block_experimental = false:warning
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false:warning
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false:warning
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false:warning
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:warning
+csharp_style_allow_embedded_statements_on_same_line_experimental = false:warning
+
 # =============================================================================
 # NAMING CONVENTIONS
 # =============================================================================
@@ -437,8 +450,9 @@ dotnet_diagnostic.IDE0020.severity = warning
 dotnet_diagnostic.IDE0038.severity = warning
 
 # IDE0021-IDE0027: Expression-bodied members
-dotnet_diagnostic.IDE0021.severity = suggestion
-dotnet_diagnostic.IDE0022.severity = suggestion
+dotnet_diagnostic.IDE0021.severity = warning
+# IDE0022: Expression-bodied methods - disabled (contextual, not universal)
+dotnet_diagnostic.IDE0022.severity = none
 dotnet_diagnostic.IDE0023.severity = suggestion
 dotnet_diagnostic.IDE0024.severity = suggestion
 dotnet_diagnostic.IDE0025.severity = suggestion
@@ -492,10 +506,11 @@ dotnet_diagnostic.IDE0044.severity = warning
 dotnet_diagnostic.IDE0045.severity = suggestion
 
 # IDE0046: Use conditional expression for return
-dotnet_diagnostic.IDE0046.severity = suggestion
+dotnet_diagnostic.IDE0046.severity = warning
 
 # IDE0047/IDE0048: Parentheses preferences
-dotnet_diagnostic.IDE0047.severity = suggestion
+# IDE0047: Remove unnecessary parentheses for cleaner code
+dotnet_diagnostic.IDE0047.severity = warning
 dotnet_diagnostic.IDE0048.severity = suggestion
 
 # IDE0049: Use language keywords instead of framework type names
@@ -649,12 +664,13 @@ dotnet_diagnostic.IDE0280.severity = warning
 dotnet_diagnostic.IDE0290.severity = suggestion
 
 # IDE0300-IDE0305: Collection expression preferences
-dotnet_diagnostic.IDE0300.severity = suggestion
-dotnet_diagnostic.IDE0301.severity = suggestion
-dotnet_diagnostic.IDE0302.severity = suggestion
-dotnet_diagnostic.IDE0303.severity = suggestion
-dotnet_diagnostic.IDE0304.severity = suggestion
-dotnet_diagnostic.IDE0305.severity = suggestion
+# Enforces modern C# collection expressions []. Elevated via TreatWarningsAsErrors.
+dotnet_diagnostic.IDE0300.severity = warning
+dotnet_diagnostic.IDE0301.severity = warning
+dotnet_diagnostic.IDE0302.severity = warning
+dotnet_diagnostic.IDE0303.severity = warning
+dotnet_diagnostic.IDE0304.severity = warning
+dotnet_diagnostic.IDE0305.severity = warning
 
 # NOTE: IDE0306-IDE0319 are reserved/unused or apply to non-C# languages.
 # IDE0306 exists (collection expression for new) but is covered by IDE0300-IDE0305.
@@ -684,19 +700,19 @@ dotnet_diagnostic.IDE0330.severity = suggestion
 # Recommends nameof(List<>) over nameof(List<int>) when type args don't matter.
 # C# 14+ feature for cleaner nameof expressions with generics.
 csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
-dotnet_diagnostic.IDE0340.severity = suggestion
+dotnet_diagnostic.IDE0340.severity = warning
 
 # IDE0350: Use implicitly typed lambda expression
 # Recommends (x) => x over (int x) => x when types can be inferred.
 # Reduces verbosity in lambda expressions where types are obvious from context.
 csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
-dotnet_diagnostic.IDE0350.severity = suggestion
+dotnet_diagnostic.IDE0350.severity = warning
 
 # IDE0360: Simplify property accessor
 # Recommends simplifying property accessors that only access the field keyword.
 # Enables cleaner field-backed properties introduced in C# 13/14.
 csharp_style_prefer_simple_property_accessors = true:suggestion
-dotnet_diagnostic.IDE0360.severity = suggestion
+dotnet_diagnostic.IDE0360.severity = warning
 
 # NOTE: These C# 14 features work without dedicated IDE analyzer rules:
 # - Extension members (extension types with properties/static members)
@@ -735,9 +751,10 @@ dotnet_analyzer_diagnostic.category-Usage.severity = warning
 # DOCUMENTATION RULES
 # -----------------------------------------------------------------------------
 # CS1591: Missing XML comment for publicly visible type or member
-# Enabled at suggestion level - surfaces in IDE without blocking builds.
-# Use #pragma or [SuppressMessage] for intentional exceptions (e.g., generated code).
-dotnet_diagnostic.CS1591.severity = suggestion
+# We've disabled this rule since code should strive to be self-documenting (clean code principles).
+# There are some instances where comments should be added, but those can be handled separately.
+# These are things like auto generated documentation for APIs, NuGet packages, etc. where public API / interfaces are expected to have documentation.
+dotnet_diagnostic.CS1591.severity = none
 
 # CS1573: Parameter has no matching param tag
 dotnet_diagnostic.CS1573.severity = suggestion
@@ -834,6 +851,197 @@ dotnet_diagnostic.CA2227.severity = suggestion
 # Example:
 # dotnet_diagnostic.MEDLEY001.severity = warning
 # dotnet_diagnostic.MEDLEY002.severity = error
+
+# RS1007: Provide localizable arguments to diagnostic descriptor constructor
+# Suppressed: Internal analyzer project, not distributing publicly
+dotnet_diagnostic.RS1007.severity = none
+
+# -----------------------------------------------------------------------------
+# .NET 9 CA RULES (Added 2026-01-04)
+# -----------------------------------------------------------------------------
+# Reference: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-9/sdk#code-analysis
+
+# CA1514: Avoid redundant length argument
+dotnet_diagnostic.CA1514.severity = warning
+
+# CA1515: Consider making public types internal
+# Suggestion level for modular monolith - intentional public types in Contracts
+dotnet_diagnostic.CA1515.severity = suggestion
+
+# CA1871: Do not pass nullable struct to ArgumentNullException.ThrowIfNull
+dotnet_diagnostic.CA1871.severity = warning
+
+# CA1872: Prefer Convert.ToHexString over BitConverter.ToString
+dotnet_diagnostic.CA1872.severity = warning
+
+# CA2022: Avoid inexact read with Stream.Read
+dotnet_diagnostic.CA2022.severity = warning
+
+# CA2262: Set MaxResponseHeadersLength properly (measured in KB, not bytes)
+dotnet_diagnostic.CA2262.severity = warning
+
+# CA2263: Prefer generic overload when type is known
+dotnet_diagnostic.CA2263.severity = warning
+
+# CA2264: Do not pass non-nullable value to ArgumentNullException.ThrowIfNull
+dotnet_diagnostic.CA2264.severity = warning
+
+# CA2265: Do not compare Span<T> to null or default
+dotnet_diagnostic.CA2265.severity = warning
+
+# -----------------------------------------------------------------------------
+# .NET 10 CA RULES (Added 2026-01-04)
+# -----------------------------------------------------------------------------
+# Reference: https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview
+
+# CA1873: Avoid potentially expensive logging
+# Use LoggerMessageAttribute or guard with IsEnabled() for expensive operations
+dotnet_diagnostic.CA1873.severity = warning
+
+# -----------------------------------------------------------------------------
+# ADDITIONAL IDE RULES (Added 2026-01-04)
+# -----------------------------------------------------------------------------
+
+# IDE0121: Simplify LINQ type check and cast
+dotnet_diagnostic.IDE0121.severity = suggestion
+
+# IDE0306: Use collection expression for new
+dotnet_diagnostic.IDE0306.severity = warning
+
+# IDE0370: Remove unnecessary suppression
+dotnet_diagnostic.IDE0370.severity = warning
+
+# IDE0380: Remove unnecessary 'unsafe' modifier
+dotnet_diagnostic.IDE0380.severity = warning
+
+# =============================================================================
+# RESHARPER / RIDER SYNC PROPERTIES
+# =============================================================================
+# These properties sync .editorconfig with ReSharper/Rider inspections.
+# Reference: https://www.jetbrains.com/help/rider/EditorConfig_Index.html
+
+# -----------------------------------------------------------------------------
+# INVERT IF (CRITICAL - Early Returns / Guard Clauses)
+# -----------------------------------------------------------------------------
+# Enforces fail-fast pattern by suggesting to invert nested if statements.
+# This is the most important rule for encouraging early returns and guard clauses.
+resharper_invert_if_highlighting = error
+
+# -----------------------------------------------------------------------------
+# BRACE ENFORCEMENT (Consistency)
+# -----------------------------------------------------------------------------
+# Requires braces for all control flow statements.
+resharper_braces_for_for = required
+resharper_braces_for_foreach = required
+resharper_braces_for_ifelse = required
+resharper_braces_for_while = required
+resharper_braces_for_using = required
+resharper_braces_for_lock = required
+resharper_braces_for_fixed = required
+
+# -----------------------------------------------------------------------------
+# ASYNC PATTERNS (Reliability)
+# -----------------------------------------------------------------------------
+# Prevents async void methods and lambdas which have unobservable exceptions.
+resharper_async_void_lambda_highlighting = error
+resharper_async_void_method_highlighting = error
+
+# -----------------------------------------------------------------------------
+# LINQ PERFORMANCE
+# -----------------------------------------------------------------------------
+# Warns about possible multiple enumeration of IEnumerable.
+resharper_possible_multiple_enumeration_highlighting = error
+
+# -----------------------------------------------------------------------------
+# NULL CHECKING
+# -----------------------------------------------------------------------------
+# Highlights possible null reference exceptions.
+resharper_possible_null_reference_exception_highlighting = error
+resharper_possible_null_reference_argument_highlighting = warning
+
+# -----------------------------------------------------------------------------
+# COLLECTION EXPRESSIONS (Modern C#)
+# -----------------------------------------------------------------------------
+# Enforces use of modern collection expression syntax [].
+resharper_collection_expression_highlighting = error
+
+# -----------------------------------------------------------------------------
+# CANCELLATION TOKEN (Async Best Practices)
+# -----------------------------------------------------------------------------
+# Suggests using CancellationToken where methods support it.
+resharper_method_supports_cancellation_highlighting = error
+
+# -----------------------------------------------------------------------------
+# REDUNDANT CODE (Clean Code)
+# -----------------------------------------------------------------------------
+# Identifies and highlights redundant code patterns.
+resharper_redundant_base_qualifier_highlighting = warning
+resharper_redundant_this_qualifier_highlighting = warning
+resharper_redundant_cast_highlighting = warning
+resharper_redundant_empty_object_creation_argument_list_highlighting = warning
+resharper_redundant_explicit_array_creation_highlighting = warning
+resharper_redundant_name_qualifier_highlighting = warning
+resharper_redundant_using_directive_highlighting = warning
+resharper_redundant_string_interpolation_highlighting = warning
+resharper_redundant_to_string_call_highlighting = warning
+resharper_redundant_type_arguments_of_method_highlighting = warning
+
+# Contextual - disable redundant default value highlighting (sometimes explicit is clearer)
+resharper_redundant_argument_default_value_highlighting = none
+
+# -----------------------------------------------------------------------------
+# PATTERN MATCHING (Modern C#)
+# -----------------------------------------------------------------------------
+resharper_convert_switch_statement_to_switch_expression_highlighting = suggestion
+resharper_merge_into_pattern_highlighting = suggestion
+resharper_use_pattern_matching_highlighting = warning
+
+# -----------------------------------------------------------------------------
+# NAMING CONVENTIONS
+# -----------------------------------------------------------------------------
+# Sync with our naming conventions.
+resharper_inconsistent_naming_highlighting = warning
+
+# -----------------------------------------------------------------------------
+# MISCELLANEOUS CODE QUALITY
+# -----------------------------------------------------------------------------
+# Enforce modern syntax and best practices.
+resharper_use_collection_expression_highlighting = warning
+resharper_use_implicit_type_highlighting = suggestion
+resharper_use_var_for_built_in_types_highlighting = suggestion
+resharper_suggest_var_or_type_simple_types_highlighting = suggestion
+resharper_suggest_var_or_type_built_in_types_highlighting = suggestion
+resharper_suggest_var_or_type_elsewhere_highlighting = suggestion
+
+# Format string issues
+resharper_format_string_problem_highlighting = error
+
+# Unused members and parameters
+resharper_unused_member_global_highlighting = warning
+resharper_unused_member_local_highlighting = warning
+resharper_unused_parameter_global_highlighting = warning
+resharper_unused_parameter_local_highlighting = warning
+
+# Convert to compound assignment
+resharper_convert_to_compound_assignment_highlighting = warning
+
+# Prefer method group conversion
+resharper_convert_to_method_group_highlighting = suggestion
+
+# Simplify LINQ expressions
+resharper_simplify_linq_expression_highlighting = suggestion
+
+# Use index from end expression
+resharper_use_index_from_end_expression_highlighting = warning
+
+# Use deconstruction
+resharper_use_deconstruction_highlighting = suggestion
+
+# Use object or collection initializer
+resharper_use_object_or_collection_initializer_highlighting = warning
+
+# Prefer conditional access
+resharper_convert_if_statement_to_conditional_expression_highlighting = suggestion
 
 # =============================================================================
 # XML / MSBUILD FILES
@@ -950,3 +1158,85 @@ end_of_line = lf
 [*.tfvars]
 indent_size = 2
 end_of_line = lf
+
+# =============================================================================
+# ANALYZER PROJECT OVERRIDES
+# =============================================================================
+# Roslyn analyzer projects have different formatting conventions.
+# These are internal tooling projects, not application code.
+[src/SharedKernel/SharedKernel.Analyzers/**.cs]
+# Disable experimental formatting rules for analyzer code (IDE2000-IDE2006)
+dotnet_style_allow_multiple_blank_lines_experimental = true:none
+dotnet_style_allow_statement_immediately_after_block_experimental = true:none
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:none
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:none
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:none
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:none
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:none
+# Disable corresponding diagnostics
+dotnet_diagnostic.IDE2000.severity = none
+dotnet_diagnostic.IDE2001.severity = none
+dotnet_diagnostic.IDE2002.severity = none
+dotnet_diagnostic.IDE2003.severity = none
+dotnet_diagnostic.IDE2004.severity = none
+dotnet_diagnostic.IDE2005.severity = none
+dotnet_diagnostic.IDE2006.severity = none
+
+# Analyzer test projects also need relaxed rules
+[tests/SharedKernel/SharedKernel.Analyzers.Tests/**.cs]
+dotnet_style_allow_multiple_blank_lines_experimental = true:none
+dotnet_style_allow_statement_immediately_after_block_experimental = true:none
+csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = true:none
+csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true:none
+csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true:none
+csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:none
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:none
+dotnet_diagnostic.IDE2000.severity = none
+dotnet_diagnostic.IDE2001.severity = none
+dotnet_diagnostic.IDE2002.severity = none
+dotnet_diagnostic.IDE2003.severity = none
+dotnet_diagnostic.IDE2004.severity = none
+dotnet_diagnostic.IDE2005.severity = none
+dotnet_diagnostic.IDE2006.severity = none
+# Relax var preference for test code (analyzer tests use var extensively)
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+dotnet_diagnostic.IDE0008.severity = suggestion
+# CA1000: Do not declare static members on generic types
+# Suppressed: Test verifier pattern uses generic static classes per Microsoft Roslyn SDK templates.
+# This is the standard pattern for analyzer testing: CSharpAnalyzerVerifier<TAnalyzer>.VerifyAsync()
+dotnet_diagnostic.CA1000.severity = none
+
+# =============================================================================
+# CA2007 (ConfigureAwait) - FOLDER-SPECIFIC OVERRIDES
+# =============================================================================
+# Per Stephen Toub's ConfigureAwait FAQ:
+# - Library code should use ConfigureAwait(false) for perf/reliability
+# - ASP.NET Core apps have no SynchronizationContext (can skip)
+# Reference: https://devblogs.microsoft.com/dotnet/configureawait-faq/
+
+# SharedKernel - library code, may be extracted to NuGet package
+[src/SharedKernel/**/*.cs]
+dotnet_diagnostic.CA2007.severity = warning
+
+# Modules - library-like code loaded into ASP.NET Core host
+[src/Modules/**/*.cs]
+dotnet_diagnostic.CA2007.severity = warning
+
+# ASP.NET Core apps - no SynchronizationContext
+[src/Medley.Web/**/*.cs]
+dotnet_diagnostic.CA2007.severity = none
+
+[src/Medley.IdentityServer/**/*.cs]
+dotnet_diagnostic.CA2007.severity = none
+
+# Aspire host/service defaults - app code
+[src/Medley.AppHost/**/*.cs]
+dotnet_diagnostic.CA2007.severity = none
+
+[src/Medley.ServiceDefaults/**/*.cs]
+dotnet_diagnostic.CA2007.severity = none
+
+# Tests - skip ConfigureAwait enforcement
+[tests/**/*.cs]
+dotnet_diagnostic.CA2007.severity = none

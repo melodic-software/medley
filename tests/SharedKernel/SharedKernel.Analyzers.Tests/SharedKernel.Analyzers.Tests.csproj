@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <!-- xUnit v3 requires Exe output type -->
+    <OutputType>Exe</OutputType>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- xUnit v3 -->
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <!-- Assertions -->
+    <PackageReference Include="Shouldly" />
+
+    <!-- Test SDK -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+
+    <!-- Roslyn Analyzer Testing -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\SharedKernel\SharedKernel.Analyzers\SharedKernel.Analyzers.csproj" />
+    <ProjectReference Include="..\..\..\src\SharedKernel\SharedKernel.Analyzers.CodeFixes\SharedKernel.Analyzers.CodeFixes.csproj" />
+  </ItemGroup>
+
+</Project>

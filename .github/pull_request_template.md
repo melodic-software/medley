@@ -15,12 +15,22 @@
 - [ ] breaking: Breaking change (requires `!` suffix in commit/PR title)
 
 ## Checklist
+
+### Required
 - [ ] Commits follow conventional commits format
 - [ ] Build succeeds with no errors
 - [ ] Tests added/updated and passing
 - [ ] No new analyzer warnings
-- [ ] Documentation updated (if needed)
-- [ ] Security implications considered (if applicable)
+
+### If Applicable
+- [ ] Documentation updated
+- [ ] Security implications reviewed (auth, input validation, secrets handling)
+- [ ] Breaking changes documented and communicated
+- [ ] Database migrations tested
+- [ ] Performance impact assessed for hot paths
+
+### Contributor Agreement
+- [ ] I have read and agree to the [Contributor License Agreement](../CONTRIBUTING.md#contributor-license-agreement)
 
 ## How to Test
 <!-- Steps for reviewers to verify the changes -->

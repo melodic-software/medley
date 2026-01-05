@@ -52,6 +52,7 @@ body:
       options:
         - Core/Shared
         - Authentication
+        - Security
         - Blazor Frontend
         - API
         - Infrastructure/CI-CD

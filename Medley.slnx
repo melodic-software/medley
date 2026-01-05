@@ -1,0 +1,62 @@
+<Solution>
+  <!-- ============================================================================
+       MEDLEY - Main Solution
+       ============================================================================
+       STATUS: Pre-MVP Scaffolding Phase
+
+       This solution is being incrementally populated. Placeholder folders show
+       the planned architecture. Projects are added as implementation progresses.
+
+       Currently included:
+         - SharedKernel.Analyzers (custom Roslyn analyzers)
+         - SharedKernel.Analyzers.CodeFixes (code fix providers)
+         - SharedKernel.Analyzers.Tests (analyzer unit tests)
+
+       Use Medley.Analyzers.slnx for focused analyzer-only development.
+       ============================================================================ -->
+
+  <!-- Application Host & Defaults -->
+  <Folder Name="/AppHost/">
+    <!-- Medley.AppHost project will be added here -->
+  </Folder>
+  <Folder Name="/ServiceDefaults/">
+    <!-- Medley.ServiceDefaults project will be added here -->
+  </Folder>
+
+  <!-- Presentation Layer -->
+  <Folder Name="/Web/">
+    <!-- Medley.Web (Blazor + BFF) project will be added here -->
+  </Folder>
+  <Folder Name="/IdentityServer/">
+    <!-- Medley.IdentityServer project will be added here -->
+  </Folder>
+
+  <!-- SharedKernel -->
+  <Folder Name="/SharedKernel/">
+    <Project Path="src/SharedKernel/SharedKernel.Analyzers/SharedKernel.Analyzers.csproj" />
+    <Project Path="src/SharedKernel/SharedKernel.Analyzers.CodeFixes/SharedKernel.Analyzers.CodeFixes.csproj" />
+    <!-- Additional SharedKernel projects will be added here:
+         - SharedKernel (core DDD building blocks)
+         - SharedKernel.Application
+         - SharedKernel.Infrastructure
+         - SharedKernel.Contracts -->
+  </Folder>
+
+  <!-- Business Modules -->
+  <Folder Name="/Modules/">
+    <!-- Module projects will be added here (Users, Orders, etc.) -->
+  </Folder>
+
+  <!-- Tests -->
+  <Folder Name="/Tests/">
+    <Folder Name="/Tests/SharedKernel/">
+      <Project Path="tests/SharedKernel/SharedKernel.Analyzers.Tests/SharedKernel.Analyzers.Tests.csproj" />
+    </Folder>
+    <Folder Name="/Tests/Modules/">
+      <!-- Module test projects will be added here -->
+    </Folder>
+    <Folder Name="/Tests/Architecture/">
+      <!-- Architecture.Tests project will be added here -->
+    </Folder>
+  </Folder>
+</Solution>

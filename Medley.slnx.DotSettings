@@ -1,0 +1,168 @@
+<wpf:ResourceDictionary xml:space="preserve"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="clr-namespace:System;assembly=mscorlib"
+    xmlns:ss="urn:schemas-jetbrains-com:settings-storage-xaml"
+    xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+  <!-- ==========================================================================
+       MEDLEY - ReSharper/Rider Solution Settings
+       ==========================================================================
+       This file provides solution-wide settings for JetBrains ReSharper and Rider.
+       Settings are synced with .editorconfig where possible.
+       Reference: https://www.jetbrains.com/help/rider/Sharing_Configuration_Options.html
+       ========================================================================== -->
+
+  <!-- ==========================================================================
+       SOLUTION-WIDE ANALYSIS
+       ========================================================================== -->
+  <s:Boolean x:Key="/Default/CodeInspection/Highlighting/HighlightingEnabled/@EntryValue">True</s:Boolean>
+
+  <!-- C# 14 Language Level (.NET 10) -->
+  <s:String x:Key="/Default/CodeInspection/CSharpLanguageProject/LanguageVersion/@EntryValue">CSharp140</s:String>
+
+  <!-- ==========================================================================
+       ROSLYN ANALYZER INTEGRATION
+       ========================================================================== -->
+  <s:Boolean x:Key="/Default/CodeInspection/Roslyn/RoslynEnabled/@EntryValue">True</s:Boolean>
+  <s:Boolean x:Key="/Default/CodeInspection/Roslyn/UseRoslynInSwea/@EntryValue">True</s:Boolean>
+
+  <!-- ==========================================================================
+       CRITICAL INSPECTIONS (ERROR Severity)
+       ========================================================================== -->
+
+  <!-- InvertIf - CRITICAL for early returns/guard clauses -->
+  <!-- Enforces fail-fast pattern by suggesting to invert nested if statements -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InvertIf/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- Method supports cancellation - async best practices -->
+  <!-- Suggests using CancellationToken where methods support it -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=MethodSupportsCancellation/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- EF Core unlimited string length - database performance -->
+  <!-- Prevents creating NVARCHAR(MAX) columns which hurt query performance -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EntityFramework_002EModelValidation_002EUnlimitedStringLength/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- Async void - reliability -->
+  <!-- Prevents async void methods which have unobservable exceptions -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AsyncVoidMethod/@EntryIndexedValue">ERROR</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AsyncVoidLambda/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- Possible multiple enumeration - performance -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=PossibleMultipleEnumeration/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- Collection expression - modern C# -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CollectionExpression/@EntryIndexedValue">ERROR</s:String>
+
+  <!-- ==========================================================================
+       WARNING SEVERITY INSPECTIONS
+       ========================================================================== -->
+
+  <!-- Redundant code patterns -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantParentheses/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantBaseQualifier/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantThisQualifier/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantCast/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantNameQualifier/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantUsingDirective/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantStringInterpolation/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantToStringCall/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- Null checking -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=PossibleNullReferenceException/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=PossibleNullReferenceArgument/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- Pattern matching -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=UsePatternMatching/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- Naming -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InconsistentNaming/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- ==========================================================================
+       SUGGESTION SEVERITY INSPECTIONS
+       ========================================================================== -->
+
+  <!-- Switch expression conversion -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertSwitchStatementToSwitchExpression/@EntryIndexedValue">SUGGESTION</s:String>
+
+  <!-- Method group conversion -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertToMethodGroup/@EntryIndexedValue">SUGGESTION</s:String>
+
+  <!-- ==========================================================================
+       DISABLED INSPECTIONS (Contextual Rules)
+       ========================================================================== -->
+
+  <!-- Expression-bodied methods - contextual, not universal -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ConvertToExpressionBodyMethod/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+
+  <!-- Redundant argument default value - sometimes explicit is clearer -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantArgumentDefaultValue/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+
+  <!-- Blazor HTML path false positives -->
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=Html_002EPathError/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+
+  <!-- ==========================================================================
+       ROSLYN ANALYZER SEVERITIES
+       ========================================================================== -->
+
+  <!-- IDE0022: Use expression body for methods - disabled (contextual) -->
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=IDE0022/@EntryIndexedValue">DO_NOT_SHOW</s:String>
+
+  <!-- .NET 10 / C# 14 Roslyn rules -->
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=IDE0330/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=IDE0340/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=IDE0350/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=IDE0360/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- .NET 9 CA Rules -->
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA1514/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA1515/@EntryIndexedValue">SUGGESTION</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA1871/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA1872/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA2022/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA2262/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA2263/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA2264/@EntryIndexedValue">WARNING</s:String>
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA2265/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- .NET 10 CA Rules -->
+  <s:String x:Key="/Default/CodeInspection/Roslyn/AnalyzerSeverities/=CA1873/@EntryIndexedValue">WARNING</s:String>
+
+  <!-- ==========================================================================
+       C# 14 CODE STYLE
+       ========================================================================== -->
+
+  <!-- Field keyword preference for property backing fields -->
+  <s:String x:Key="/Default/CodeStyle/CodeFormatting/CSharp/PropertyAccessorStyle/@EntryValue">UseFieldKeyword</s:String>
+  <s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=ReplaceWithFieldKeyword/@EntryIndexedValue">SUGGESTION</s:String>
+
+  <!-- ==========================================================================
+       GENERATED CODE EXCLUSIONS
+       ========================================================================== -->
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=*.g.cs/@EntryValue">*.g.cs</s:String>
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=*.g.i.cs/@EntryValue">*.g.i.cs</s:String>
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=*.generated.cs/@EntryValue">*.generated.cs</s:String>
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=*.Designer.cs/@EntryValue">*.Designer.cs</s:String>
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=*Migrations*/@EntryValue">*Migrations*</s:String>
+  <s:String x:Key="/Default/CodeInspection/GeneratedCode/GeneratedFileMasks/=AssemblyInfo.cs/@EntryValue">AssemblyInfo.cs</s:String>
+
+  <!-- ==========================================================================
+       KNOWN ABBREVIATIONS FOR NAMING
+       ========================================================================== -->
+  <!-- These abbreviations are allowed in identifiers without being flagged -->
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=API/@EntryValue">API</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=ID/@EntryValue">ID</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=UI/@EntryValue">UI</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=DTO/@EntryValue">DTO</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=CQRS/@EntryValue">CQRS</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=URL/@EntryValue">URL</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=HTML/@EntryValue">HTML</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=JSON/@EntryValue">JSON</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=HTTP/@EntryValue">HTTP</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=SQL/@EntryValue">SQL</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=EF/@EntryValue">EF</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=DI/@EntryValue">DI</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=BFF/@EntryValue">BFF</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=JWT/@EntryValue">JWT</s:String>
+  <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=OIDC/@EntryValue">OIDC</s:String>
+
+</wpf:ResourceDictionary>

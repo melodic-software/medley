@@ -1,5 +1,5 @@
 <!-- Last reviewed: 2026-01-04 -->
-<!-- ~900 tokens -->
+<!-- ~1,100 tokens -->
 <!-- Lazy-loaded: Only included when working in tests/ directory -->
 
 # Testing Conventions

@@ -11,7 +11,7 @@ Feature flags (toggles) enable trunk-based development by allowing incomplete fe
 > **Version Note**: As of January 2026, the latest stable version is 4.4.0.
 > Always verify the current version on [NuGet](https://www.nuget.org/packages/Microsoft.FeatureManagement) before adding to your project.
 >
-> *Last verified: 2026-01-03*
+> *Last verified: 2026-01-04*
 
 ## Installation
 
@@ -135,4 +135,4 @@ Can evolve to **LaunchDarkly** or similar for:
 
 ---
 
-*Last updated: 2026-01-03*
+*Last updated: 2026-01-04*

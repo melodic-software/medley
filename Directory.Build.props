@@ -15,7 +15,10 @@
     <LangVersion>14</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- TreatWarningsAsErrors: Conditional per best practices (perplexity, ndepend.com/blog) -->
+    <!-- Release: strict (fail on warnings) | Debug: permissive (faster iteration) -->
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' != 'Release'">false</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <!-- AnalysisLevel controls .NET/Roslyn analyzers (code style, CA rules) -->
     <AnalysisLevel>latest-all</AnalysisLevel>
@@ -75,8 +78,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!-- Code Analysis - keep CA warnings separate from compiler errors -->
-    <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+    <!-- Code Analysis: Conditional per config to catch security issues in Release -->
+    <!-- Release: CA warnings fail build (security rules enforced) -->
+    <!-- Debug: CA warnings stay warnings (faster iteration) -->
+    <CodeAnalysisTreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</CodeAnalysisTreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors Condition="'$(Configuration)' != 'Release'">false</CodeAnalysisTreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup>
