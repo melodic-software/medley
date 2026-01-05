@@ -43,15 +43,15 @@ jobs:
 
       - name: Restore dependencies
         if: steps.check-sln.outputs.has_solution == 'true'
-        run: dotnet restore
+        run: dotnet restore Medley.slnx
 
       - name: Build
         if: steps.check-sln.outputs.has_solution == 'true'
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build Medley.slnx --no-restore --configuration Release
 
       - name: Test
         if: steps.check-sln.outputs.has_solution == 'true'
-        run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+        run: dotnet test Medley.slnx --no-build --configuration Release --verbosity normal --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
 
       - name: Upload test results
         if: always() && steps.check-sln.outputs.has_solution == 'true'

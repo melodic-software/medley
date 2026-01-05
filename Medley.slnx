@@ -11,8 +11,6 @@
          - SharedKernel.Analyzers (custom Roslyn analyzers)
          - SharedKernel.Analyzers.CodeFixes (code fix providers)
          - SharedKernel.Analyzers.Tests (analyzer unit tests)
-
-       Use Medley.Analyzers.slnx for focused analyzer-only development.
        ============================================================================ -->
 
   <!-- Application Host & Defaults -->

@@ -119,14 +119,9 @@ medley/
 
 See [docs/architecture/](docs/architecture/) for detailed structure documentation.
 
-### Solution Files
+### Solution File
 
-| Solution | Purpose |
-|----------|---------|
-| `Medley.slnx` | **Main solution** - Full application with all modules, tests, and infrastructure |
-| `Medley.Analyzers.slnx` | **Focused solution** - Roslyn analyzers only, for faster IDE load during analyzer development |
-
-> **Tip**: Use `Medley.Analyzers.slnx` when developing custom analyzers to avoid loading the full solution.
+Open `Medley.slnx` - the main solution containing all modules, tests, and infrastructure.
 
 ## Getting Started
 
