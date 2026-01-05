@@ -37,17 +37,17 @@ Key conventions reinforced from `.editorconfig`. Full rules enforced by analyzer
 
 ### Type Suffix Conventions
 
-Enforced by Roslyn analyzers (MDYNAME rules):
+Enforced by Roslyn analyzers. See [Analyzer Rule Registry](../../../docs/analyzers/rule-registry.md#naming-rules-mdyname) for full MDYNAME rules:
 
-| Type | Required Suffix | Example |
-|------|-----------------|---------|
-| Repository implementations | `Repository` | `UserRepository` |
-| FluentValidation validators | `Validator` | `CreateUserValidator` |
-| MediatR handlers | `Handler` | `CreateUserHandler` |
-| Specification classes | `Specification` | `ActiveUsersSpecification` |
-| EF Core configurations | `Configuration` | `UserConfiguration` |
-| Domain/Application services | `Service` | `EmailService` |
-| DTOs | `Dto` | `UserDto` |
+| Type | Required Suffix | Example | Rule |
+|------|-----------------|---------|------|
+| Repository implementations | `Repository` | `UserRepository` | MDYNAME001 |
+| FluentValidation validators | `Validator` | `CreateUserValidator` | MDYNAME002 |
+| MediatR handlers | `Handler` | `CreateUserHandler` | MDYNAME003 |
+| Specification classes | `Specification` | `ActiveUsersSpecification` | MDYNAME004 |
+| Domain/Application services | `Service` | `EmailService` | MDYNAME005 |
+| EF Core configurations | `Configuration` | `UserConfiguration` | MDYNAME006 |
+| DTOs | `Dto` | `UserDto` | MDYNAME007 |
 
 **Note**: Handler uses simple `Handler` suffix (not `CommandHandler`). Namespace provides context.
 
